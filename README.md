@@ -36,3 +36,65 @@ Run both
 
 - Frontend: `cd frontend && npm run dev`
 - Backend: build/start per your server framework (e.g., `npm run start`)
+
+## Implemented skeletons
+
+Basic skeletons were added under frontend/ (Vite + React) and backend/ (FastAPI). Use the commands below to run each locally.
+
+Frontend
+- cd frontend
+- npm install
+- npm run dev
+
+Backend
+- cd backend
+- python -m venv .venv
+- .venv\Scripts\activate  # on Windows, or `source .venv/bin/activate` on macOS/Linux
+- pip install -r requirements.txt
+- copy .env.example to .env and edit if needed
+- python -m uvicorn main:app --reload --port 5000
+
+Run both
+- Start backend, then frontend (frontend expects VITE_API_URL configured or default http://localhost:5000)
+
+## Quick connectivity checks
+
+1. Start backend (example):
+   - cd backend
+   - python -m uvicorn main:app --reload --host 0.0.0.0 --port 5000
+
+2. Test from terminal:
+   - curl http://localhost:5000/health
+   - curl -i http://localhost:5000/debug-origin
+
+3. From browser:
+   - Start frontend (cd frontend && npm run dev)
+   - Use the "Test Connection" button in the app to call /debug-origin and see the Origin reported.
+
+4. If you still see "Failed to fetch":
+   - Verify the backend process is running and listening on the port you expect.
+   - Ensure VITE_API_URL in frontend/.env points to http://localhost:5000 and restart Vite.
+   - Check browser console for CORS errors and backend logs (Origin printed by the new middleware).
+   - Make sure FRONTEND_ORIGIN in backend/.env includes your dev origin (e.g., http://localhost:5173).
+
+## Troubleshooting: "Error: Failed to fetch"
+
+- Ensure backend is running:
+  - cd backend
+  - python -m uvicorn main:app --reload --port 5000
+  - Test: curl http://localhost:5000/health  (should return {"status":"ok"})
+
+- Ensure frontend points to backend:
+  - In frontend/.env (or .env.local) set VITE_API_URL=http://localhost:5000
+  - Restart Vite after changing env vars: npm run dev
+
+- CORS:
+  - Backend reads FRONTEND_ORIGIN (comma-separated allowed origins). Example:
+    FRONTEND_ORIGIN=http://localhost:5173
+  - If you use wildcard (*) set FRONTEND_ORIGIN=* but note credentials are disabled in that mode.
+
+- Common causes of "Failed to fetch":
+  - Backend not running or wrong port
+  - Frontend using wrong API URL
+  - CORS/preflight blocked (see logs)
+  - Network/HTTPS mismatch (http vs https)
