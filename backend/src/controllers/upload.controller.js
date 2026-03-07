@@ -4,6 +4,7 @@
  */
 
 const uploadService = require('../services/upload.service');
+const resumeService = require('../services/resume.service');
 
 // Multer configuration for CV uploads
 const multer = require('multer');
@@ -39,7 +40,7 @@ const upload = multer({
 });
 
 // Handle CV upload
-const uploadCV = (req, res) => {
+const uploadCV = async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({
@@ -47,11 +48,23 @@ const uploadCV = (req, res) => {
             });
         }
 
+        // Get the full file path
+        const filePath = path.join(__dirname, '../../uploads/', req.file.filename);
+        
+        console.log('Extracting text from:', filePath);
+
+        // Extract text from the resume
+        const extractedText = await resumeService.extractResumeText(filePath);
+        
+        console.log('Extraction successful, text length:', extractedText ? extractedText.length : 0);
+
         res.json({
             message: 'CV uploaded successfully',
-            filename: req.file.filename
+            filename: req.file.filename,
+            extractedText: extractedText
         });
     } catch (error) {
+        console.error('Error extracting text:', error);
         res.status(500).json({
             message: 'Error uploading file',
             error: error.message
