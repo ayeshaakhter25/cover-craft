@@ -7,6 +7,7 @@ export default function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadMessage, setUploadMessage] = useState("");
   const [uploadedFilename, setUploadedFilename] = useState("");
+  const [extractedText, setExtractedText] = useState("");
   const [loading, setLoading] = useState(false);
   const [testResult, setTestResult] = useState("");
 
@@ -28,6 +29,7 @@ export default function App() {
       setSelectedFile(file);
       setUploadMessage("");
       setUploadedFilename("");
+      setExtractedText("");
     }
   }
 
@@ -57,6 +59,7 @@ export default function App() {
       if (res.ok) {
         setUploadMessage("✅ " + data.message);
         setUploadedFilename(data.filename);
+        setExtractedText(data.extractedText || "No text extracted");
         setSelectedFile(null);
         // Reset file input
         document.getElementById('fileInput').value = '';
@@ -142,6 +145,15 @@ export default function App() {
         {uploadedFilename && (
           <div style={styles.successBox}>
             📁 Saved as: <strong>{uploadedFilename}</strong>
+          </div>
+        )}
+
+        {extractedText && (
+          <div style={styles.extractedTextSection}>
+            <h4 style={styles.extractedTextTitle}>📄 Extracted Resume Text:</h4>
+            <div style={styles.extractedTextBox}>
+              {extractedText}
+            </div>
           </div>
         )}
       </div>
@@ -245,6 +257,25 @@ const styles = {
   info: {
     fontSize: "14px",
     color: "#666",
+  },
+  extractedTextSection: {
+    marginTop: "20px",
+  },
+  extractedTextTitle: {
+    color: "#333",
+    marginBottom: "10px",
+  },
+  extractedTextBox: {
+    backgroundColor: "#f0f0f0",
+    padding: "15px",
+    borderRadius: "5px",
+    border: "1px solid #ddd",
+    maxHeight: "400px",
+    overflowY: "auto",
+    whiteSpace: "pre-wrap",
+    fontFamily: "'Courier New', monospace",
+    fontSize: "12px",
+    lineHeight: "1.5",
   },
 };
 
