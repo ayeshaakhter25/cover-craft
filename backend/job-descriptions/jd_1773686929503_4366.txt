@@ -1,0 +1,5 @@
+Data Analyst
+Collect, process, and analyze data to help organizations make informed decisions.
+Create reports and visualizations using tools like Excel, SQL, or Power BI.
+Identify trends and patterns in large datasets.
+Communicate insights clearly to stakeholders.

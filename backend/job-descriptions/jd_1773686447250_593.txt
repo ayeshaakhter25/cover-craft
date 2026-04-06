@@ -1,0 +1,5 @@
+Software Developer (CS Student)
+Responsible for designing, developing, and maintaining software applications.
+Collaborate with team members to implement new features and fix bugs.
+Write clean, efficient, and well-documented code.
+Test and debug applications to ensure high performance and reliability.

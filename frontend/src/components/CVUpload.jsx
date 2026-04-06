@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import './CVUpload.css';
+import SkillDisplay from './SkillDisplay';
 
 const CVUpload = () => {
     const [file, setFile] = useState(null);
     const [extractedText, setExtractedText] = useState('');
+    const [skills, setSkills] = useState([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -46,6 +48,7 @@ const CVUpload = () => {
             if (response.ok) {
                 setMessage(data.message);
                 setExtractedText(data.extractedText || '');
+                setSkills(data.skills || []);
             } else {
                 setMessage(data.message || 'Error uploading file');
             }
@@ -89,6 +92,10 @@ const CVUpload = () => {
                         {extractedText}
                     </div>
                 </div>
+            )}
+            
+            {skills.length > 0 && (
+                <SkillDisplay skills={skills} />
             )}
         </div>
     );

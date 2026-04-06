@@ -13,6 +13,9 @@ require('dotenv').config();
 // Import routes
 const testRoutes = require('./routes/test.routes');
 const uploadRoutes = require('./routes/upload.routes');
+const jobRoutes = require('./routes/job.routes');
+const skillRoutes = require('./routes/skill.routes');
+const matchRoutes = require('./routes/match.routes');
 
 // Initialize Express app
 const app = express();
@@ -28,10 +31,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
+app.use('/job-descriptions', express.static('job-descriptions'));
 
 // Routes
 app.use('/api', testRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api', jobRoutes);
+app.use('/api', skillRoutes);
+app.use('/api', matchRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -45,7 +52,11 @@ app.get('/', (req, res) => {
         version: '1.0.0',
         endpoints: {
             health: '/health',
-            test: '/api/test'
+            test: '/api/test',
+            uploadCV: '/api/upload-cv',
+            extractSkills: '/api/extract-skills',
+            jobDescription: '/api/job-description',
+            matchScore: '/api/match-score'
         }
     });
 });
@@ -68,4 +79,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-

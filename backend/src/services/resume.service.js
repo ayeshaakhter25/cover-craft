@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const mammoth = require('mammoth');
 const pdfParse = require('pdf-parse');
+const SkillService = require('./skill.service');
 
 class ResumeService {
     /**
@@ -67,6 +68,22 @@ class ResumeService {
         } catch (error) {
             console.error('Error extracting DOCX:', error.message);
             throw new Error(`Failed to extract text from DOCX: ${error.message}`);
+        }
+    }
+
+    /**
+     * Extract both text and skills from resume file
+     * @param {string} filePath - Path to resume file
+     * @returns {Promise<{text: string, skills: string[]}>} Extracted text and skills
+     */
+    static async extractResumeWithSkills(filePath) {
+        try {
+            const text = await this.extractResumeText(filePath);
+            const skills = SkillService.extractSkills(text);
+            return { text, skills };
+        } catch (error) {
+            console.error('Error extracting resume with skills:', error.message);
+            throw error;
         }
     }
 }

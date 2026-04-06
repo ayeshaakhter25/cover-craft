@@ -1,11 +1,8 @@
-# Resume Extraction Service Implementation
+# Task Progress: Fix Node.js SyntaxError due to HTML entities in JS files - COMPLETE
 
-## Task: Create a service that extracts text from uploaded resumes
+## Steps completed:
+- [x] Step 1: Fix backend/src/services/skill.service.js (replace entities with proper JS formatting)
+- [x] Step 2: Fix backend/src/services/job.service.js 
+- [x] Step 3: Fix backend/src/routes/match.routes.js
 
-### Steps:
-- [x] 1. Install pdf-parse and mammoth packages
-- [x] 2. Create resume.service.js with extractResumeText(filePath) function
-- [x] 3. Update upload.controller.js to use the resume extraction service
-- [x] 4. Test the implementation
-- [x] 5. Update frontend App.jsx to display extracted text
-
+Next: Test server startup with `cd backend && npm start`

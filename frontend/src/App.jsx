@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SkillDisplay from './components/SkillDisplay';
 
 const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000";
 console.log("Career Craft API base:", apiBase);
@@ -8,11 +9,18 @@ export default function App() {
   const [uploadMessage, setUploadMessage] = useState("");
   const [uploadedFilename, setUploadedFilename] = useState("");
   const [extractedText, setExtractedText] = useState("");
+  const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [testResult, setTestResult] = useState("");
 
+  const [jdText, setJdText] = useState("");
+  const [jdMessage, setJdMessage] = useState("");
+  const [jdFilename, setJdFilename] = useState("");
+  const [jdLoading, setJdLoading] = useState(false);
+
   // Handle file selection
   function handleFileChange(e) {
+
     const file = e.target.files[0];
     if (file) {
       // Validate file type
@@ -60,6 +68,7 @@ export default function App() {
         setUploadMessage("✅ " + data.message);
         setUploadedFilename(data.filename);
         setExtractedText(data.extractedText || "No text extracted");
+        setSkills(data.skills || []);
         setSelectedFile(null);
         // Reset file input
         document.getElementById('fileInput').value = '';
@@ -74,8 +83,47 @@ export default function App() {
     }
   }
 
+  // Handle job description submit
+  async function handleJobSubmit(e) {
+    e.preventDefault();
+    setJdLoading(true);
+    setJdMessage("");
+
+    if (!jdText.trim()) {
+      setJdMessage("Error: Job description cannot be empty");
+      setJdLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${apiBase}/api/job-description`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ jobDescription: jdText.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setJdMessage("✅ " + data.message);
+        setJdFilename(data.filename);
+        setJdText("");
+      } else {
+        setJdMessage("❌ " + (data.message || "Failed to save job description"));
+      }
+    } catch (err) {
+      console.error("Job submit error:", err);
+      setJdMessage("Error: " + err.message);
+    } finally {
+      setJdLoading(false);
+    }
+  }
+
   // Test API connection
   async function testConnection() {
+
     try {
       const res = await fetch(`${apiBase}/api/test`);
       const data = await res.json();
@@ -148,12 +196,58 @@ export default function App() {
           </div>
         )}
 
-        {extractedText && (
+{extractedText && (
           <div style={styles.extractedTextSection}>
             <h4 style={styles.extractedTextTitle}>📄 Extracted Resume Text:</h4>
             <div style={styles.extractedTextBox}>
               {extractedText}
             </div>
+          </div>
+        )}
+        {skills.length > 0 && (
+          <div style={{marginTop: '20px'}}>
+            <SkillDisplay skills={skills} />
+          </div>
+        )}
+      </div>
+
+      {/* Job Description Section */}
+      <div style={styles.section}>
+        <h3>📋 Job Description</h3>
+        <form onSubmit={handleJobSubmit}>
+          <textarea
+            value={jdText}
+            onChange={(e) => setJdText(e.target.value)}
+            placeholder="Paste the full job description here..."
+            rows="6"
+            style={styles.textarea}
+            disabled={jdLoading}
+          />
+          <div style={styles.buttonGroup}>
+            <button type="submit" disabled={jdLoading} style={styles.buttonPrimary}>
+              {jdLoading ? "Saving..." : "Save Job Description"}
+            </button>
+          </div>
+        </form>
+
+        {jdMessage && (
+          <div style={jdMessage.includes("Error") ? styles.errorBox : styles.successBox}>
+            {jdMessage}
+          </div>
+        )}
+
+        {jdFilename && (
+          <div style={styles.successBox}>
+            📁 Saved as: <strong>{jdFilename}</strong>
+            <br />
+            <a 
+              href={`${apiBase}/job-descriptions/${jdFilename}`} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={styles.fileLink}
+            >
+              🔗 View File
+            </a>
           </div>
         )}
       </div>
@@ -277,5 +371,26 @@ const styles = {
     fontSize: "12px",
     lineHeight: "1.5",
   },
+  textarea: {
+    width: "100%",
+    padding: "12px",
+    marginTop: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "5px",
+    fontSize: "14px",
+    boxSizing: "border-box",
+    resize: "vertical",
+  },
+  fileLink: {
+    color: "#007bff",
+    textDecoration: "none",
+    marginTop: "5px",
+    display: "inline-block",
+    padding: "5px 10px",
+    backgroundColor: "#e7f3ff",
+    borderRadius: "3px",
+  },
 };
+
+
 

@@ -48,26 +48,36 @@ const uploadCV = async (req, res) => {
             });
         }
 
-        // Get the full file path
-        const filePath = path.join(__dirname, '../../uploads/', req.file.filename);
+        // Get the full file path - use absolute path
+        const uploadsDir = path.join(__dirname, '../../uploads');
+        const filePath = path.join(uploadsDir, req.file.filename);
         
-        console.log('Extracting text from:', filePath);
+        console.log('File path:', filePath);
+        console.log('File exists:', require('fs').existsSync(filePath));
 
-        // Extract text from the resume
-        const extractedText = await resumeService.extractResumeText(filePath);
+        // Extract text AND skills from the resume
+        const { text: extractedText, skills } = await resumeService.extractResumeWithSkills(filePath);
         
-        console.log('Extraction successful, text length:', extractedText ? extractedText.length : 0);
+        // Ensure we have text
+        if (!extractedText || extractedText.trim() === '') {
+            extractedText = 'No text could be extracted from the document';
+        }
+        
+        console.log('Extracted text length:', extractedText.length);
+        console.log('Skills found:', skills);
 
         res.json({
             message: 'CV uploaded successfully',
             filename: req.file.filename,
-            extractedText: extractedText
+            extractedText: extractedText,
+            skills: skills
         });
     } catch (error) {
         console.error('Error extracting text:', error);
         res.status(500).json({
             message: 'Error uploading file',
-            error: error.message
+            error: error.message,
+            extractedText: 'Error extracting text: ' + error.message
         });
     }
 };
