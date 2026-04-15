@@ -7,6 +7,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/database');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
@@ -16,6 +17,8 @@ const uploadRoutes = require('./routes/upload.routes');
 const jobRoutes = require('./routes/job.routes');
 const skillRoutes = require('./routes/skill.routes');
 const matchRoutes = require('./routes/match.routes');
+const userRoutes = require('./routes/user.routes');
+const coverRoutes = require('./routes/cover.routes');
 
 // Initialize Express app
 const app = express();
@@ -39,6 +42,8 @@ app.use('/api', uploadRoutes);
 app.use('/api', jobRoutes);
 app.use('/api', skillRoutes);
 app.use('/api', matchRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/cover', coverRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -52,11 +57,16 @@ app.get('/', (req, res) => {
         version: '1.0.0',
         endpoints: {
             health: '/health',
-            test: '/api/test',
-            uploadCV: '/api/upload-cv',
-            extractSkills: '/api/extract-skills',
-            jobDescription: '/api/job-description',
-            matchScore: '/api/match-score'
+    test: '/api/test',
+    users: {
+      register: '/api/users/register',
+      login: '/api/users/login'
+    },
+    uploadCV: '/api/upload-cv',
+    extractSkills: '/api/extract-skills',
+    jobDescription: '/api/job-description',
+    matchScore: '/api/match-score'
+
         }
     });
 });
@@ -72,10 +82,15 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal server error' });
 });
 
-// Start server
-app.listen(PORT, () => {
+// Connect DB then start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
     console.log(`🚀 Career Craft backend running on port ${PORT}`);
     console.log(`📋 Test endpoint: http://localhost:${PORT}/api/test`);
+    console.log(`🔐 Auth endpoints ready: /api/users/register & /api/users/login`);
+  });
+}).catch((err) => {
+  console.error('Failed to connect DB:', err);
 });
 
 module.exports = app;

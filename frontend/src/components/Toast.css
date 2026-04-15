@@ -1,0 +1,128 @@
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  max-width: 400px;
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(20px);
+  border: 1px solid transparent;
+  transform: translateX(110%);
+  animation: toastSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 10000;
+  font-weight: 500;
+}
+
+.toast--success {
+  background: rgb(16 185 129 / 0.95);
+  border-color: rgb(16 185 129 / 0.3);
+  color: white;
+}
+
+.toast--error {
+  background: rgb(239 68 68 / 0.95);
+  border-color: rgb(239 68 68 / 0.3);
+  color: white;
+}
+
+.toast--warning {
+  background: rgb(245 158 11 / 0.95);
+  border-color: rgb(245 158 11 / 0.3);
+  color: white;
+}
+
+.toast--info {
+  background: rgb(59 130 246 / 0.95);
+  border-color: rgb(59 130 246 / 0.3);
+  color: white;
+}
+
+.toast-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-message {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition);
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.toast-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
+
+@keyframes toastSlideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes toastSlideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(110%);
+  }
+}
+
+/* Multiple toasts stacking */
+.toast:nth-child(2) { top: calc(1.5rem + 70px); }
+.toast:nth-child(3) { top: calc(1.5rem + 140px); }
+.toast:nth-child(4) { top: calc(1.5rem + 210px); }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .toast {
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+    top: auto;
+    bottom: 1rem;
+  }
+
+  .toast:nth-child(2),
+  .toast:nth-child(3),
+  .toast:nth-child(4) {
+    bottom: calc(1rem + 80px);
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .toast {
+    backdrop-filter: blur(20px);
+  }
+}
+

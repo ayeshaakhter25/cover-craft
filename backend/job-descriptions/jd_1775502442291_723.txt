@@ -1,0 +1,5 @@
+Frontend Developer
+Develop user-friendly web interfaces using HTML, CSS, and JavaScript.
+Work with designers to implement responsive and interactive UI components.
+Ensure cross-browser compatibility and optimize website performance.
+Maintain and improve existing front-end features.

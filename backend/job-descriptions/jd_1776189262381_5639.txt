@@ -1,0 +1,6 @@
+Software Developer
+
+Design, develop, and maintain software applications based on requirements.
+Write clean, scalable, and efficient code for web or desktop applications.
+Collaborate with teams to test and deploy software solutions.
+Skills Required: Programming, Problem Solving, Java/C++/Python, Database Management, Debugging.

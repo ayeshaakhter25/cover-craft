@@ -1,0 +1,14 @@
+const mongoose = require('mongoose');
+
+const matchSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  cvId: { type: mongoose.Schema.Types.ObjectId, ref: 'CV' },
+  jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
+  matchScore: { type: Number, required: true },
+  matchingSkills: [String],
+  missingSkills: [String],
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('Match', matchSchema);
+

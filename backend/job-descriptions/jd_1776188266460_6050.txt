@@ -1,0 +1,4 @@
+Responsible for designing, coding, and maintaining software applications.
+Collaborates with team members to develop efficient solutions.
+Tests and debugs applications to ensure quality performance.
+Maintains documentation for software updates and changes.
