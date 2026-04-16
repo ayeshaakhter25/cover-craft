@@ -1,98 +1,184 @@
 import React, { useState } from 'react';
-import { LucideFilePenLine, Download, Share2, Copy } from 'lucide-react';
+import './CoverLetter.css';
 
-const CoverLetter = ({ uploadedFilename, jdFilename, onGenerate, loading, generatedCover, onDownload }) => {
-  const [customPrompt, setCustomPrompt] = useState('');
+const STYLES = [
+  { key: 'technical',   label: 'Technical' },
+  { key: 'achievement', label: 'Achievement' },
+  { key: 'creative',    label: 'Creative' },
+  { key: 'short',       label: 'Short' },
+];
 
-  const handleGenerate = () => {
-    onGenerate({
-      resumeFile: uploadedFilename,
-      jobFile: jdFilename,
-      customPrompt: customPrompt.trim()
-    });
+export default function CoverLetter({ uploadedFilename, jdFilename, addToast, apiBase }) {
+  const [activeStyle, setActiveStyle]   = useState('technical');
+  const [letter, setLetter]             = useState('');
+  const [loading, setLoading]           = useState(false);
+  const [allowEdit, setAllowEdit]       = useState(false);
+
+  const generate = async () => {
+    if (!uploadedFilename) { addToast('Upload a CV first', 'warning'); return; }
+    if (!jdFilename)        { addToast('Run an analysis with a job description first', 'warning'); return; }
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res  = await fetch(`${apiBase}/api/cover/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({
+          resumeFile: uploadedFilename,
+          jobFile: jdFilename,
+          style: activeStyle
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLetter(data.coverLetter || '');
+        addToast('Cover letter generated!', 'success');
+      } else {
+        addToast(data.error || 'Generation failed', 'error');
+      }
+    } catch {
+      addToast('Network error', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(generatedCover);
-    // Show copied toast (handled by parent)
+  const downloadTxt = () => {
+    if (!letter) return;
+    const blob = new Blob([letter], { type: 'text/plain;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'cover_letter.txt';
+    document.body.appendChild(a); a.click();
+    a.remove(); URL.revokeObjectURL(url);
+  };
+
+  const downloadDocx = () => {
+    // Simple HTML to download as .doc (opens in Word)
+    if (!letter) return;
+    const html  = `<html><body><pre style="font-family:Calibri,sans-serif;font-size:12pt;">${letter}</pre></body></html>`;
+    const blob  = new Blob([html], { type: 'application/msword' });
+    const url   = URL.createObjectURL(blob);
+    const a     = document.createElement('a');
+    a.href = url; a.download = 'cover_letter.doc';
+    document.body.appendChild(a); a.click();
+    a.remove(); URL.revokeObjectURL(url);
+  };
+
+  const printPDF = () => {
+    if (!letter) return;
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html>
+        <head>
+          <title>Cover Letter</title>
+          <style>
+            body { font-family: 'Calibri', sans-serif; font-size: 13pt; line-height: 1.7; padding: 3rem; color: #1a1a2e; }
+            pre  { white-space: pre-wrap; word-break: break-word; }
+          </style>
+        </head>
+        <body><pre>${letter}</pre></body>
+      </html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(() => { win.print(); win.close(); }, 400);
   };
 
   return (
-    <div className="cover-letter-container">
-      <div className="section-header">
-        <h2 className="section-title">
-          <LucideFilePenLine className="inline-icon" />
-          AI Cover Letter Generator
-        </h2>
-        <p className="section-subtitle">Generate personalized cover letters in seconds</p>
+    <div className="cover-page">
+
+      {/* ── Style Selector ── */}
+      <div className="card cover-card">
+        <h3 className="cover-section-title">Style Selector</h3>
+        <div className="style-tabs">
+          {STYLES.map(s => (
+            <button
+              key={s.key}
+              className={`style-tab ${activeStyle === s.key ? 'active' : ''}`}
+              onClick={() => setActiveStyle(s.key)}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {!uploadedFilename || !jdFilename ? (
-        <div className="empty-state">
-          <div className="empty-icon">📝</div>
-          <h3>Upload CV and Job Description first</h3>
-          <p>Generate perfect cover letters tailored to each job</p>
+      {/* ── AI Editor ── */}
+      <div className="card cover-card">
+        <div className="cover-editor-header">
+          <h3 className="cover-section-title">AI Editor</h3>
+          <label className="allow-edit-label">
+            <input
+              type="checkbox"
+              checked={allowEdit}
+              onChange={(e) => setAllowEdit(e.target.checked)}
+            />
+            ✏️ Allow editor
+          </label>
         </div>
-      ) : (
-        <>
-          <div className="cover-actions">
-            <button 
-              onClick={handleGenerate}
-              disabled={loading}
-              className="btn btn-primary generate-btn"
-            >
-              {loading ? (
-                <>
-                  <span className="spinner"></span>
-                  Generating...
-                </>
-              ) : (
-                '✨ Generate Cover Letter'
-              )}
-            </button>
-          </div>
+        <p className="cover-editor-sub">
+          Generated letter text editor, and generated letter to allows editing.
+        </p>
 
-          {generatedCover && (
-            <div className="cover-result">
-              <div className="cover-header">
-                <h3>✨ Your Generated Cover Letter</h3>
-                <div className="cover-actions">
-                  <button onClick={onDownload} className="btn btn-success btn-sm" title="Download PDF">
-                    <Download size={18} />
-                    Download PDF
-                  </button>
-                  <button onClick={handleCopy} className="btn btn-secondary btn-sm" title="Copy to clipboard">
-                    <Copy size={18} />
-                    Copy Text
-                  </button>
-                  <button className="btn btn-secondary btn-sm" title="Share">
-                    <Share2 size={18} />
-                    Share
-                  </button>
-                </div>
-              </div>
-              <div className="cover-content">
-                {generatedCover}
-              </div>
+        {/* Generate button */}
+        <button
+          className="btn btn-primary cover-gen-btn"
+          onClick={generate}
+          disabled={loading}
+        >
+          {loading ? <><span className="spinner" /> Generating...</> : '✨ Generate Cover Letter'}
+        </button>
+
+        {/* Editor area */}
+        <div className={`editor-wrap ${!letter ? 'editor-empty' : ''}`}>
+          {!letter && !loading && (
+            <div className="editor-placeholder">
+              <span>🤖</span>
+              <p>Your AI-generated cover letter will appear here.</p>
+              <p className="editor-placeholder-sub">Click "Generate Cover Letter" above to get started.</p>
             </div>
           )}
-
-          <div className="custom-prompt-section">
-            <label className="form-label">Optional: Custom Instructions</label>
+          {(letter || loading) && (
             <textarea
-              placeholder="e.g. Make it more formal, emphasize leadership experience, 300 words max..."
-              value={customPrompt}
-              onChange={(e) => setCustomPrompt(e.target.value)}
-              className="form-textarea"
-              rows="3"
+              className="cover-editor-textarea"
+              value={loading ? 'Generating your cover letter...' : letter}
+              onChange={(e) => allowEdit && setLetter(e.target.value)}
+              readOnly={!allowEdit}
+              rows={18}
             />
-            <p className="help-text">Fine-tune your cover letter with specific instructions</p>
-          </div>
-        </>
-      )}
+          )}
+        </div>
+      </div>
+
+      {/* ── Download Options ── */}
+      <div className="card cover-card cover-downloads">
+        <button
+          className="btn btn-download-pdf"
+          onClick={printPDF}
+          disabled={!letter}
+        >
+          ⬇ Download PDF
+        </button>
+        <button
+          className="btn btn-download-docx"
+          onClick={downloadDocx}
+          disabled={!letter}
+        >
+          📄 Export to .docx
+        </button>
+        <button
+          className="btn btn-ghost"
+          onClick={downloadTxt}
+          disabled={!letter}
+        >
+          📋 Copy as Text
+        </button>
+      </div>
+
     </div>
   );
-};
-
-export default CoverLetter;
+}
 

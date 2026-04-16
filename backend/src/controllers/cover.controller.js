@@ -15,7 +15,7 @@ const generateCoverLetter = async (req, res) => {
     const resumeResult = await ResumeService.extractResumeWithSkills(`uploads/${resumeFile}`);
     const { skills: resumeSkills } = resumeResult;
 
-    const jdText = await JobService.readJobDescription(jobFile);
+    const jdText = await JobService.getJobDescription(jobFile);
 
     const groq = new GroqService();
     const coverLetter = await groq.generateCoverLetter(resumeSkills, jdText, jobTitle);

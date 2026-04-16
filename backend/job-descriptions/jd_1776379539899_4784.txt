@@ -1,0 +1,20 @@
+Job Title: Senior Python Developer
+
+Job Description:
+We are looking for an experienced Senior Python Developer to lead development efforts and design scalable systems.
+
+Responsibilities:
+
+Architect and develop high-performance applications
+Lead code reviews and mentor junior developers
+Design system architecture and technical solutions
+Ensure security, scalability, and reliability
+Collaborate with stakeholders and product teams
+
+Requirements:
+
+5+ years of Python development experience
+Strong expertise in Django/Flask/FastAPI
+Experience with microservices architecture
+Knowledge of cloud platforms (AWS, Azure, GCP)
+Strong leadership and communication skills

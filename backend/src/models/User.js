@@ -8,12 +8,8 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Temporarily disabled pre-save middleware to fix "next is not a function"
-// userSchema.pre('save', async function(next) {
-//   if (!this.isModified('password')) return next();
-//   this.password = await bcrypt.hash(this.password, 12);
-//   next();
-// });
+// Remove broken middleware completely
+// Password hashing done in controller
 
 userSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);

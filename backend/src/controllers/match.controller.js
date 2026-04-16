@@ -7,7 +7,10 @@ const ResumeService = require('../services/resume.service');
 const JobService = require('../services/job.service');
 const SkillService = require('../services/skill.service');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs');
+const Match = require('../models/Match');
+const CV = require('../models/CV');
+const Job = require('../models/Job');
 
 const calculateMatchScore = async (req, res) => {
     try {
@@ -22,7 +25,7 @@ const calculateMatchScore = async (req, res) => {
         // Extract resume skills
         let resumeSkills = [];
         const resumePath = path.join('uploads', resumeFile);
-        
+
         if (fs.existsSync(resumePath)) {
             const resumeData = await ResumeService.extractResumeWithSkills(resumePath);
             resumeSkills = resumeData.skills || [];
@@ -51,6 +54,28 @@ const calculateMatchScore = async (req, res) => {
 
         // Calculate match
         const result = SkillService.calculateMatchScore(resumeSkills, jobSkills);
+
+        // Persist match record for authenticated user
+        if (req.user && req.user.id) {
+            try {
+                const cvDoc = await CV.findOne({ filename: resumeFile });
+                let jobDoc = null;
+                if (jobFile) {
+                    jobDoc = await Job.findOne({ filename: jobFile });
+                }
+
+                await Match.create({
+                    userId: req.user.id,
+                    cvId: cvDoc?._id || null,
+                    jobId: jobDoc?._id || null,
+                    matchScore: result.matchScore,
+                    matchingSkills: result.matchingSkills,
+                    missingSkills: result.missingSkills
+                });
+            } catch (err) {
+                console.error('Failed to save Match record:', err.message);
+            }
+        }
 
         res.json({
             message: 'Match score calculated successfully',

@@ -1,0 +1,148 @@
+/* ══════════════════════════════════════
+   Results & Insights  –  Screen 4
+══════════════════════════════════════ */
+.results-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* empty state */
+.results-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.results-empty-icon { font-size: 3.5rem; }
+.results-empty h3 { font-size: 1.25rem; margin: 0; }
+.results-empty p  { color: var(--text-muted); margin: 0; }
+
+/* ── Row helpers ── */
+.results-top,
+.results-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 768px) {
+  .results-top, .results-bottom { grid-template-columns: 1fr; }
+}
+
+.results-card { padding: 1.5rem; }
+.rc-title {
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-secondary);
+  margin: 0 0 1.25rem;
+}
+
+/* ── Gauge ── */
+.gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+}
+.gauge-svg { display: block; }
+.gauge-pct  { font-size: 1.6rem; font-weight: 800; }
+.gauge-label{ font-size: .75rem; }
+.gauge-sub  { font-size: .85rem; color: var(--text-secondary); margin: 0; font-weight: 600; }
+.gauge-footer {
+  margin-top: 1.25rem;
+  font-size: .78rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: .6rem;
+  background: var(--page-bg);
+  border-radius: 6px;
+}
+
+/* ── Skill gap ── */
+.skill-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.skill-col-head {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.skill-col-head.missing { color: var(--danger); }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.no-skills { font-size: .82rem; color: var(--text-muted); }
+
+/* ── Health ── */
+.health-list {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  margin-bottom: 1rem;
+}
+.health-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-size: .9rem;
+  color: var(--text-primary);
+}
+.health-label { font-weight: 500; }
+.health-note  {
+  font-size: .78rem;
+  color: var(--text-muted);
+  margin: 0;
+  padding-top: .75rem;
+  border-top: 1px solid var(--card-border);
+}
+
+/* ── Tips ── */
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  font-size: .88rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.tip-num {
+  background: var(--primary-light);
+  color: var(--primary);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Actions ── */
+.results-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

@@ -4,6 +4,8 @@
  */
 
 const JobService = require('../services/job.service');
+const Job = require('../models/Job');
+const SkillService = require('../services/skill.service');
 
 const saveJobDescription = async (req, res) => {
     try {
@@ -16,8 +18,24 @@ const saveJobDescription = async (req, res) => {
             });
         }
 
-        // Save using service
+        // Save using service (file)
         const result = await JobService.saveJobDescription(jobDescription.trim());
+
+        // Persist Job record if user present
+        if (req.user && req.user.id) {
+            try {
+                const skills = SkillService.extractSkills(jobDescription.trim());
+                await Job.create({
+                    userId: req.user.id,
+                    filename: result.filename,
+                    originalText: jobDescription.trim(),
+                    skills,
+                    jobTitle: ''
+                });
+            } catch (err) {
+                console.error('Failed to save Job record:', err.message);
+            }
+        }
 
         res.status(201).json({
             message: 'Job description stored successfully',

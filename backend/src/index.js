@@ -44,6 +44,8 @@ app.use('/api', skillRoutes);
 app.use('/api', matchRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/cover', coverRoutes);
+const cvHealthRoutes = require('./routes/cv-health.routes');
+app.use('/api/cv-health', cvHealthRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

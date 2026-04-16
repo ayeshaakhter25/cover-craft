@@ -1,0 +1,20 @@
+Job Title: Junior Python Developer
+
+Job Description:
+We are seeking a motivated Junior Python Developer to join our development team. The ideal candidate should have a foundational understanding of Python programming and a willingness to learn modern development practices.
+
+Responsibilities:
+
+Write clean, efficient, and reusable Python code
+Assist in developing backend components and APIs
+Debug and troubleshoot issues in existing applications
+Collaborate with senior developers and team members
+Participate in code reviews and testing
+
+Requirements:
+
+Basic knowledge of Python
+Understanding of OOP concepts
+Familiarity with databases (MySQL / MongoDB)
+Knowledge of Git version control
+Strong problem-solving skills

@@ -6,9 +6,11 @@
 const express = require('express');
 const router = express.Router();
 const uploadController = require('../controllers/upload.controller');
+const { protect } = require('../middleware/auth');
 
 // POST /api/upload-cv - Upload CV file
 router.post('/upload-cv', 
+    protect,
     uploadController.upload.single('cv'), 
     uploadController.uploadCV,
     uploadController.handleUploadError
@@ -16,6 +18,7 @@ router.post('/upload-cv',
 
 // POST /api/upload-cv/multiple - Upload multiple CV files (optional)
 router.post('/upload-cv/multiple', 
+    protect,
     uploadController.upload.array('cv', 5), 
     (req, res) => {
         try {

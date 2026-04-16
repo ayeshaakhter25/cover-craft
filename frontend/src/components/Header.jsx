@@ -1,78 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 
-const Header = ({ user, onLogout }) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(isDark);
-    document.documentElement.classList.toggle('dark', isDark);
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode);
-    document.documentElement.classList.toggle('dark', newDarkMode);
-  };
+export default function Header({ user, onLogout }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     onLogout();
+    navigate('/');
   };
 
-  // Track hash for simple active nav highlighting (works with anchor links)
-  const [activeHash, setActiveHash] = React.useState(window.location.hash || '#');
-
-  React.useEffect(() => {
-    const onHash = () => setActiveHash(window.location.hash || '#');
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
-
   return (
-    <header className="header">
-      <div className="header-container">
-        <div className="header-brand">
-          <div className="logo">
-            🎯
-          </div>
-          <h1 className="brand-text">CareerCraft AI</h1>
-        </div>
-        
-        <nav className="header-nav">
-          <a href="#upload" className={`nav-link ${activeHash === '#upload' ? 'active' : ''}`}>Upload CV</a>
-          <a href="#job" className={`nav-link ${activeHash === '#job' ? 'active' : ''}`}>Job Description</a>
-          <a href="#match" className={`nav-link ${activeHash === '#match' ? 'active' : ''}`}>Match Analysis</a>
+    <header className="app-header">
+      <div className="hdr-inner">
+
+        {/* Brand */}
+        <NavLink to="/" className="hdr-brand">
+          <span className="hdr-logo-box">C</span>
+          Career Craft
+        </NavLink>
+
+        {/* Nav Links */}
+        <nav className={`hdr-nav ${menuOpen ? 'open' : ''}`}>
+          <NavLink to="/"        end className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Dashboard</NavLink>
+          <NavLink to="/analysis"    className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Analysis</NavLink>
+          <NavLink to="/cover"       className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Cover Letter</NavLink>
+          <NavLink to="/cv-health"   className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>CV Health</NavLink>
         </nav>
 
-        <div className="header-actions">
-          <button 
-            className="theme-toggle"
-            onClick={toggleDarkMode}
-            aria-label="Toggle dark mode"
-            title="Toggle dark mode"
-          >
-            {darkMode ? '☀️' : '🌙'}
+        {/* Right actions */}
+        <div className="hdr-right">
+          <span className="hdr-user">{user?.name || 'User'}</span>
+          <button className="hdr-logout" onClick={handleLogout}>Logout</button>
+          {/* Hamburger */}
+          <button className="hdr-burger" onClick={() => setMenuOpen(p => !p)} aria-label="Menu">
+            {menuOpen ? '✕' : '☰'}
           </button>
-          
-          <div className="user-profile">
-            <span className="user-name">{user?.name || 'User'}</span>
-            <button 
-              className="logout-btn"
-              onClick={handleLogout}
-              aria-label="Logout"
-            >
-              Logout
-            </button>
-          </div>
         </div>
+
       </div>
     </header>
   );
-};
+}
 
-export default Header;
 

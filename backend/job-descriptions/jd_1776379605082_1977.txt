@@ -1,0 +1,20 @@
+ob Title: Next.js Developer
+
+Job Description:
+We are seeking a skilled Next.js Developer to build high-performance, SEO-friendly web applications. You will work on both frontend and backend aspects using modern frameworks.
+
+Responsibilities:
+
+Build scalable applications using Next.js
+Implement SSR (Server-Side Rendering) and SSG (Static Site Generation)
+Develop reusable components and clean UI architecture
+Integrate REST APIs / GraphQL services
+Optimize performance, SEO, and accessibility
+
+Requirements:
+
+2+ years of experience with React/Next.js
+Strong knowledge of JavaScript, TypeScript
+Experience with Tailwind CSS or modern styling tools
+Understanding of routing, middleware, and API routes in Next.js
+Familiarity with deployment (Vercel, Netlify)

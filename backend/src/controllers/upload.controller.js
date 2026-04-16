@@ -5,6 +5,7 @@
 
 const uploadService = require('../services/upload.service');
 const resumeService = require('../services/resume.service');
+const CV = require('../models/CV');
 
 // Multer configuration for CV uploads
 const multer = require('multer');
@@ -56,15 +57,32 @@ const uploadCV = async (req, res) => {
         console.log('File exists:', require('fs').existsSync(filePath));
 
         // Extract text AND skills from the resume
-        const { text: extractedText, skills } = await resumeService.extractResumeWithSkills(filePath);
-        
-        // Ensure we have text
+        const { text: extractedTextRaw, skills } = await resumeService.extractResumeWithSkills(filePath);
+        let extractedText = extractedTextRaw;
         if (!extractedText || extractedText.trim() === '') {
             extractedText = 'No text could be extracted from the document';
         }
-        
+
         console.log('Extracted text length:', extractedText.length);
         console.log('Skills found:', skills);
+
+        // If user present (protected route), persist CV record
+        if (req.user && req.user.id) {
+            try {
+                await CV.create({
+                    userId: req.user.id,
+                    filename: req.file.filename,
+                    originalName: req.file.originalname,
+                    filePath: filePath,
+                    extractedText,
+                    skills,
+                    fileSize: req.file.size,
+                    mimeType: req.file.mimetype
+                });
+            } catch (err) {
+                console.error('Failed to save CV record:', err.message);
+            }
+        }
 
         res.json({
             message: 'CV uploaded successfully',
@@ -98,7 +116,11 @@ const handleUploadError = (err, req, res, next) => {
             message: err.message
         });
     }
-    next();
+    // Only call next if it's a valid function (guard against accidental invocation)
+    if (typeof next === 'function') {
+        return next();
+    }
+    return;
 };
 
 module.exports = {

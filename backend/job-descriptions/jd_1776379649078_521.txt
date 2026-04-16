@@ -1,0 +1,20 @@
+Job Title: Data Engineer
+
+Job Description:
+We are seeking a Data Engineer to design and optimize scalable data pipelines and ensure efficient data flow across systems.
+
+Responsibilities:
+
+Build and maintain ETL/ELT pipelines
+Design data models and schemas
+Integrate data from multiple sources (APIs, databases)
+Optimize query performance and storage
+Ensure data quality and reliability
+
+Requirements:
+
+2+ years of experience in data engineering
+Strong Python and SQL skills
+Experience with tools like Apache Airflow or Apache Spark
+Knowledge of data warehouses (BigQuery, Snowflake)
+Understanding of data pipelines and distributed systems
