@@ -166,6 +166,14 @@ export default function Login({ onLogin }) {
               isLogin ? 'Sign In' : 'Create Account'
             )}
           </button>
+          <button 
+            type="button"
+            onClick={() => onLogin({ token: 'demo', user: { name: 'Demo User' } })}
+            className="demo-button"
+            style={{marginTop: '1rem', width: '100%'}}
+          >
+            🚀 Skip Demo - View Full UI
+          </button>
         </form>
 
         {message && (

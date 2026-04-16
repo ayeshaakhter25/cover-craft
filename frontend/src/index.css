@@ -1,42 +1,39 @@
 :root {
-  /* Professional CareerCraft Theme - Clean & Modern */
---primary: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
-  --primary-dark: linear-gradient(135deg, #4f46e5, #7c3aed, #db2777);
-  --primary-light: linear-gradient(135deg, #a5b4fc, #c4b5fd, #f472b6);
-  --secondary: #6b7280;
---success: linear-gradient(135deg, #10b981, #34d399);
-  --warning: linear-gradient(135deg, #f59e0b, #fbbf24);
-  --danger: linear-gradient(135deg, #ef4444, #f87171);
-  --surface: #f8fafc;
-  --surface-hover: #f1f5f9;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --border: #e2e8f0;
-  --border-hover: #cbd5e1;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 35px 60px -12px rgb(0 0 0 / 0.15);
+  /* Elegant Tech Palette */
+  --primary-color: #4F46E5; /* deep indigo */
+  --primary-dark-color: #4338CA;
+  --secondary-accent: #8B5CF6; /* soft violet */
+  --accent-pink: #EC4899;
+  --muted: #6B7280;
+  --danger-color: #DC2626;
+  --success-color: #059669;
+
+  /* Surface & text */
+  --surface: #F9FAFB; /* page background (soft off-white) */
+  --card-bg: #FFFFFF; /* card background */
+  --text-primary: #111827; /* deep charcoal */
+  --text-secondary: #6B7280;
+  --border: #E6EEF8;
+
+  /* Shadows (layered soft shadow) */
+  --shadow-sm: 0 6px 10px -4px rgba(2,6,23,0.06);
+  --shadow-md: 0 10px 15px -3px rgba(2,6,23,0.08), 0 4px 6px -2px rgba(2,6,23,0.04);
+  --shadow-lg: 0 18px 40px rgba(2,6,23,0.12);
+
   --radius-sm: 6px;
   --radius: 12px;
   --radius-lg: 20px;
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   color-scheme: light dark;
   color: var(--text-primary);
-  background-color: var(--bg-primary);
+  background-color: var(--surface);
   min-height: 100vh;
   scroll-behavior: smooth;
 }

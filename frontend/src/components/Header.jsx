@@ -23,6 +23,15 @@ const Header = ({ user, onLogout }) => {
     onLogout();
   };
 
+  // Track hash for simple active nav highlighting (works with anchor links)
+  const [activeHash, setActiveHash] = React.useState(window.location.hash || '#');
+
+  React.useEffect(() => {
+    const onHash = () => setActiveHash(window.location.hash || '#');
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
   return (
     <header className="header">
       <div className="header-container">
@@ -34,9 +43,9 @@ const Header = ({ user, onLogout }) => {
         </div>
         
         <nav className="header-nav">
-          <a href="#upload" className="nav-link">Upload CV</a>
-          <a href="#job" className="nav-link">Job Description</a>
-          <a href="#match" className="nav-link">Match Analysis</a>
+          <a href="#upload" className={`nav-link ${activeHash === '#upload' ? 'active' : ''}`}>Upload CV</a>
+          <a href="#job" className={`nav-link ${activeHash === '#job' ? 'active' : ''}`}>Job Description</a>
+          <a href="#match" className={`nav-link ${activeHash === '#match' ? 'active' : ''}`}>Match Analysis</a>
         </nav>
 
         <div className="header-actions">

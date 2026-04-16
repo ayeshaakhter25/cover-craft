@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import './App.css';
 import Header from './components/Header';
-import SkillDisplay from './components/SkillDisplay';
 import Login from './components/Login';
 import Toast from './components/Toast';
+import DashboardOverview from './components/DashboardOverview';
+import CoverLetter from './components/CoverLetter';
+import Tests from './components/Tests';
 
 const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000";
 console.log("Career Craft API base:", apiBase);
@@ -228,228 +231,12 @@ export default function App() {
     }
   };
 
-  if (!isAuthenticated) {
-    return <Login onLogin={handleLogin} />;
-  }
-
-  return (
-    <div className="dashboard">
-      <Header user={user} onLogout={handleLogout} />
-      
-      <div className="dashboard-layout">
-        {/* Sidebar */}
-        <aside className="dashboard-sidebar">
-          <nav className="sidebar-nav">
-            <button className="sidebar-item active" aria-label="CV Upload">
-              📄 CV Upload
-            </button>
-            <button className="sidebar-item" aria-label="Job Description">
-              📋 Job Description
-            </button>
-            <button className="sidebar-item" aria-label="Match Analysis">
-              📊 Match Analysis
-            </button>
-            <button className="sidebar-item" aria-label="API Test">
-              🔌 API Test
-            </button>
-          </nav>
-        </aside>
-
-        {/* Main Content */}
-        <main className="dashboard-main">
-          {/* API Test Section */}
-          <section className="card">
-            <h2 className="card-title">🔌 API Connection Test</h2>
-            <div className="card-content">
-              <div className="button-group">
-                <button onClick={testConnection} className="btn btn-secondary" type="button">
-                  Test /api/test
-                </button>
-                <button onClick={testHealth} className="btn btn-secondary" type="button">
-                  Test /health
-                </button>
-              </div>
-              {testResult && (
-                <div className="alert alert-info">
-                  {testResult}
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* CV Upload Section */}
-          <section className="card">
-            <h2 className="card-title">📄 CV Upload</h2>
-            <form onSubmit={handleUpload} className="card-content">
-              <div className="form-group">
-                <label htmlFor="fileInput" className="form-label">
-                  Choose your resume (PDF/DOCX, max 10MB)
-                </label>
-                <input
-                  type="file"
-                  id="fileInput"
-                  accept=".pdf,.docx"
-                  onChange={handleFileChange}
-                  className="form-input"
-                  disabled={loading}
-                  aria-describedby="file-help"
-                />
-                <small id="file-help" className="form-help">
-                  Only PDF and DOCX files are supported, max 10MB
-                </small>
-              </div>
-              <div className="button-group">
-                <button type="submit" disabled={loading} className="btn btn-primary">
-                  {loading ? (
-                    <>
-                      <span className="spinner" aria-hidden="true" />
-                      Uploading...
-                    </>
-                  ) : (
-                    "Upload CV"
-                  )}
-                </button>
-              </div>
-            </form>
-
-            {uploadedFilename && (
-              <div className="card">
-                <h3 className="card-subtitle">📁 Uploaded File</h3>
-                <div className="alert alert-success">
-                  Saved as: <strong>{uploadedFilename}</strong>
-                </div>
-              </div>
-            )}
-
-            {extractedText && (
-              <div className="card">
-                <h3 className="card-subtitle">📄 Extracted Resume Text</h3>
-                <div className="text-content">
-                  {extractedText}
-                </div>
-              </div>
-            )}
-
-            {skills.length > 0 && (
-              <SkillDisplay skills={skills} />
-            )}
-          </section>
-
-          {/* Job Description Section */}
-          <section className="card">
-            <h2 className="card-title">📋 Job Description</h2>
-            <form onSubmit={handleJobSubmit} className="card-content">
-              <div className="form-group">
-                <label htmlFor="jdText" className="form-label">
-                  Paste the job description
-                </label>
-                <textarea
-                  id="jdText"
-                  value={jdText}
-                  onChange={(e) => setJdText(e.target.value)}
-                  placeholder="Paste the full job description here..."
-                  className="form-textarea"
-                  rows="8"
-                  disabled={jdLoading}
-                />
-              </div>
-              <div className="button-group">
-                <button type="submit" disabled={jdLoading} className="btn btn-primary">
-                  {jdLoading ? (
-                    <>
-                      <span className="spinner" aria-hidden="true" />
-                      Saving...
-                    </>
-                  ) : (
-                    "Save Job Description"
-                  )}
-                </button>
-              </div>
-            </form>
-
-            {jdFilename && (
-              <div className="card">
-                <h3 className="card-subtitle">📁 Saved Job Description</h3>
-                <div className="alert alert-success">
-                  Saved as: <strong>{jdFilename}</strong>
-                  <br />
-                  <a 
-                    href={`${apiBase}/job-descriptions/${jdFilename}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="btn btn-secondary"
-                  >
-                    🔗 View File
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Calculate Match Section */}
-            <div className="button-group">
-              <button 
-                onClick={handleCalculateMatch} 
-                disabled={matchLoading || !uploadedFilename || !jdFilename}
-                className="btn btn-success"
-                type="button"
-              >
-                {matchLoading ? (
-                  <>
-                    <span className="spinner" aria-hidden="true" />
-                    Calculating...
-                  </>
-                ) : (
-                  "🚀 Calculate Match Score"
-                )}
-              </button>
-            </div>
-          </section>
-
-          {/* Match Results Section */}
-          {matchResult && (
-            <section className="card">
-              <h2 className="card-title">📊 Match Analysis Results</h2>
-              <div className="match-score-container">
-                <div className="score-circle large">
-                  <div className="score-ring" style={{ '--score': `${matchResult.matchScore}%` }}>
-                    <div className="score-inner">
-                      <div className="score-value">{matchResult.matchScore}%</div>
-                      <div className="score-label">
-                        {matchResult.matchScore >= 80 ? '🎉 Excellent fit!' : 
-                         matchResult.matchScore >= 60 ? '👍 Good fit!' : 
-                         matchResult.matchScore >= 40 ? '⚠️ Fair fit' : '💪 Needs improvement'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="match-skills-grid">
-                {matchResult.matchingSkills && matchResult.matchingSkills.length > 0 && (
-                  <div className="skills-section">
-                    <SkillDisplay skills={matchResult.matchingSkills} type="matching" />
-                  </div>
-                )}
-                {matchResult.missingSkills && matchResult.missingSkills.length > 0 && (
-                  <div className="skills-section">
-                    <SkillDisplay skills={matchResult.missingSkills} type="missing" />
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
-
-          {/* Info Section */}
-          <section className="card info-card">
-            <h3 className="card-subtitle">ℹ️ Upload Requirements</h3>
-            <ul className="requirements-list">
-              <li>✅ File types: PDF, DOCX</li>
-              <li>✅ Max file size: 10MB</li>
-            </ul>
-          </section>
-        </main>
-      </div>
-
-      {/* Toast Notifications */}
+  const DashboardLayout = ({ children, user, onLogout }) => (
+    <>
+      <Header user={user} onLogout={onLogout} />
+      <main className="dashboard-main">
+        {children}
+      </main>
       {toasts.map((toast) => (
         <Toast
           key={toast.id}
@@ -458,7 +245,68 @@ export default function App() {
           onClose={() => removeToast(toast.id)}
         />
       ))}
-    </div>
+    </>
+  );
+
+  // Skip auth for demo - always show dashboard
+  // if (!isAuthenticated) {
+  //   return <Login onLogin={handleLogin} />;
+  // }
+  const fakeUser = { name: 'Demo User' };
+  const handleFakeLogin = () => {
+    setIsAuthenticated(true);
+    setUser(fakeUser);
+  };
+  if (!isAuthenticated) {
+    return (
+      <div>
+        <Login onLogin={handleFakeLogin} />
+        <div style={{textAlign: 'center', marginTop: '2rem', padding: '1rem', background: '#f0f0f0'}}>
+          <p>💡 Demo mode: Click "Skip Demo" button or use test credentials:</p>
+          <p><strong>Email:</strong> test@example.com | <strong>Pass:</strong> password123</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={
+        <DashboardLayout user={user} onLogout={handleLogout}>
+          <DashboardOverview 
+            stats={{ 
+              userName: user?.name || 'User',
+              cvUploads: 12, 
+              jobsSaved: 8, 
+              avgMatchScore: 78, 
+              coversGenerated: 5 
+            }}
+            recentMatches={[
+              { score: 89, jobTitle: 'Senior Frontend Developer' },
+              { score: 76, jobTitle: 'Fullstack Engineer' },
+            ]}
+          />
+        </DashboardLayout>
+      } />
+      <Route path="/cover" element={
+        <DashboardLayout user={user} onLogout={handleLogout}>
+          <CoverLetter 
+            uploadedFilename={uploadedFilename}
+            jdFilename={jdFilename}
+            loading={false}
+            generatedCover=""
+          />
+        </DashboardLayout>
+      } />
+      <Route path="/tests" element={
+        <DashboardLayout user={user} onLogout={handleLogout}>
+          <Tests 
+            uploadedFilename={uploadedFilename}
+          />
+        </DashboardLayout>
+      } />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
