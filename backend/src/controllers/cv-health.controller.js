@@ -21,8 +21,8 @@ const healthCheck = async (req, res) => {
     const resumeData = await ResumeService.extractResumeWithSkills(resumePath);
     const text = resumeData.extractedText;
 
-    if (!text || text.length < 100) {
-      return res.status(400).json({ error: 'Valid resume text not found' });
+    if (!text || text.trim().length < 20) {
+      return res.status(400).json({ error: 'Valid resume text not found - please ensure uploaded PDF/DOCX has extractable text' });
     }
 
     const groq = new GroqService();
@@ -55,7 +55,7 @@ Format as JSON only.
 
     const analysis = await groq.client.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
-      model: "llama3.1-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       temperature: 0.3,
       max_tokens: 1000,
     });

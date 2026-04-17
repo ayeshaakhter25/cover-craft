@@ -35,12 +35,15 @@
 
 .results-card { padding: 1.5rem; }
 .rc-title {
-  font-size: .85rem;
-  font-weight: 700;
+  font-size: .82rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--text-secondary);
+  letter-spacing: .08em;
+  color: var(--primary);
   margin: 0 0 1.25rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid #C9A84C;
+  display: inline-block;
 }
 
 /* ── Gauge ── */
@@ -99,6 +102,10 @@
   gap: .65rem;
   font-size: .9rem;
   color: var(--text-primary);
+  padding: .5rem .75rem;
+  border-radius: 8px;
+  background: var(--page-bg);
+  border: 1px solid var(--card-border);
 }
 .health-label { font-weight: 500; }
 .health-note  {
@@ -127,15 +134,15 @@
   line-height: 1.5;
 }
 .tip-num {
-  background: var(--primary-light);
-  color: var(--primary);
-  width: 22px; height: 22px;
+  background: linear-gradient(135deg, #1a3a6b, #0d1f3c);
+  color: #C9A84C;
+  width: 24px; height: 24px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: .75rem;
-  font-weight: 700;
+  font-weight: 800;
   flex-shrink: 0;
 }
 
@@ -145,4 +152,33 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  padding: .5rem 0 1rem;
+}
+.results-actions .btn-primary {
+  background: linear-gradient(135deg, #C9A84C 0%, #9d7a2a 100%);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(201,168,76,.4);
+  font-weight: 700;
+  padding: .8rem 2rem;
+  border-radius: 8px;
+  font-size: .95rem;
+}
+.results-actions .btn-primary:hover {
+  background: linear-gradient(135deg, #f0d98a 0%, #C9A84C 100%);
+  color: #0d1f3c;
+}
+.results-actions .btn-ghost {
+  background: linear-gradient(135deg, #1a3a6b 0%, #0d1f3c 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 3px 10px rgba(13,31,60,.25);
+  font-weight: 700;
+  padding: .8rem 2rem;
+  border-radius: 8px;
+  font-size: .95rem;
+}
+.results-actions .btn-ghost:hover {
+  background: linear-gradient(135deg, #1e4d8c 0%, #1a3a6b 100%);
+  color: #fff;
+  transform: none;
 }

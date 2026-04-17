@@ -1,14 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DashboardOverview.css';
 
-const COMPANY_ICONS = ['🟦', '🟫', '🍏', '🟧'];
+const COMPANY_ICONS = ['💼', '🏢', '🚀', '⭐', '🎯', '🔧', '💡', '📊', '🎪', '🏆'];
+
+function scoreColor(s) {
+  if (s >= 70) return '#15803d';   // green
+  if (s >= 45) return '#b45309';   // amber
+  return '#dc2626';                 // red
+}
 
 export default function DashboardOverview({ stats, recentMatches }) {
   const navigate = useNavigate();
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const s = stats || { userName: 'User', cvUploads: 0, avgMatchScore: 0, coversGenerated: 0 };
   const matches = recentMatches || [];
+
+  const handleDeleteClick = (matchId, jobTitle) => {
+    setDeleteConfirm({ id: matchId, title: jobTitle });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm) return;
+    
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/users/matches/${deleteConfirm.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (response.ok) {
+        // Reload the page to refresh data
+        window.location.reload();
+      } else {
+        alert('Failed to delete analysis');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Error deleting analysis');
+    } finally {
+      setIsDeleting(false);
+      setDeleteConfirm(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirm(null);
+  };
 
   return (
     <div className="dash-page">
@@ -50,16 +93,29 @@ export default function DashboardOverview({ stats, recentMatches }) {
             <p className="dash-empty">No analyses yet. Start your first analysis!</p>
           ) : (
             <ul className="activity-list">
-              {matches.map((m, i) => (
-                <li key={i} className="activity-item">
-                  <span className="activity-icon">{COMPANY_ICONS[i % COMPANY_ICONS.length]}</span>
-                  <div className="activity-info">
-                    <span className="activity-title">{m.jobTitle || 'Untitled Job'}</span>
-                    <span className="activity-sub">{m.company || 'Company'}</span>
-                  </div>
-                  <span className="activity-score">{m.score ?? m.matchScore ?? 0}%</span>
-                </li>
-              ))}
+              {matches.map((m, i) => {
+                const sc = m.score ?? m.matchScore ?? 0;
+                return (
+                  <li key={m.id || i} className="activity-item">
+                    <span className="activity-icon">{COMPANY_ICONS[i % COMPANY_ICONS.length]}</span>
+                    <div className="activity-info">
+                      <span className="activity-title">{m.jobTitle && m.jobTitle !== 'Untitled Job' ? m.jobTitle : `Job ${i + 1}`}</span>
+                      <span className="activity-sub">{m.company && m.company !== 'Unknown Company' ? m.company : 'CareerCraft Analysis'}</span>
+                    </div>
+                    <span
+                      className="activity-score"
+                      style={{ background: `linear-gradient(135deg, ${scoreColor(sc)}, ${scoreColor(sc)}dd)` }}
+                    >{sc}%</span>
+                    <button 
+                      className="delete-btn" 
+                      onClick={() => handleDeleteClick(m.id, m.jobTitle || `Job ${i + 1}`)}
+                      title="Delete analysis"
+                    >
+                      🗑️
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
@@ -84,7 +140,38 @@ export default function DashboardOverview({ stats, recentMatches }) {
         </div>
 
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="delete-modal-overlay">
+          <div className="delete-modal">
+            <div className="delete-modal-header">
+              <h3>Delete Analysis</h3>
+            </div>
+            <div className="delete-modal-body">
+              <p>Are you sure you want to delete the analysis for:</p>
+              <p className="delete-target">"{deleteConfirm.title}"</p>
+              <p className="delete-warning">This action cannot be undone.</p>
+            </div>
+            <div className="delete-modal-actions">
+              <button 
+                className="btn btn-cancel" 
+                onClick={cancelDelete}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-delete" 
+                onClick={confirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-

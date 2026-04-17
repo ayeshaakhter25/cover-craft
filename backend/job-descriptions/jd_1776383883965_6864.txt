@@ -1,0 +1,20 @@
+QA Engineer
+10pearls
+Job Description:
+We are looking for a QA Engineer who can perform both manual and automated testing to ensure high-quality software delivery.
+
+Responsibilities:
+
+Design and execute test plans and test cases
+Perform functional, regression, and integration testing
+Develop and maintain automated test scripts
+Report and track defects
+Collaborate with developers and product teams
+
+Requirements:
+
+2+ years of QA experience
+Experience in automation tools like Selenium or Cypress
+Knowledge of API testing using Postman
+Understanding of test frameworks and scripting (Python/JavaScript)
+Familiarity with Agile methodologies

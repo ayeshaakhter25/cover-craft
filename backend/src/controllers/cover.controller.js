@@ -18,12 +18,13 @@ const generateCoverLetter = async (req, res) => {
     const jdText = await JobService.getJobDescription(jobFile);
 
     const groq = new GroqService();
-    const coverLetter = await groq.generateCoverLetter(resumeSkills, jdText, jobTitle);
+    const result = await groq.generateCoverLetter(resumeSkills, jdText, jobTitle);
+    const letterText = result.content || result;
 
     res.json({
       success: true,
-      coverLetter,
-      wordCount: coverLetter.split(' ').length,
+      coverLetter: letterText,
+      wordCount: typeof letterText === 'string' ? letterText.split(' ').length : 0,
       usedSkills: resumeSkills
     });
   } catch (error) {

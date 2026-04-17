@@ -1,0 +1,20 @@
+Job Title: Junior QA Engineer
+
+Job Description:
+We are seeking a Junior QA Engineer to ensure the quality and reliability of our software products. The ideal candidate should have a basic understanding of software testing principles and attention to detail.
+
+Responsibilities:
+
+Execute test cases (manual testing)
+Identify, document, and track bugs
+Work closely with developers to reproduce issues
+Perform regression testing
+Assist in creating test documentation
+
+Requirements:
+
+Basic knowledge of SDLC and STLC
+Understanding of manual testing techniques
+Familiarity with bug tracking tools (e.g., Jira)
+Strong analytical and problem-solving skills
+Good communication skills

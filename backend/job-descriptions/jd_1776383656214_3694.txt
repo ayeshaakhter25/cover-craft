@@ -1,0 +1,20 @@
+Data Engineer – Big Data
+Techsols 
+Job Description:
+We are looking for a Data Engineer with expertise in big data technologies to handle large-scale data processing and analytics.
+
+Responsibilities:
+
+Develop scalable data pipelines for big data systems
+Process large datasets using distributed frameworks
+Implement real-time data streaming solutions
+Work with cloud-based data platforms
+Monitor and optimize data infrastructure
+
+Requirements:
+
+Experience with Apache Hadoop and Apache Spark
+Knowledge of streaming tools like Apache Kafka
+Experience with cloud platforms (AWS, GCP, Azure)
+Strong understanding of distributed systems
+Proficiency in Python/Scala

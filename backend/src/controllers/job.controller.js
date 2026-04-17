@@ -25,12 +25,17 @@ const saveJobDescription = async (req, res) => {
         if (req.user && req.user.id) {
             try {
                 const skills = SkillService.extractSkills(jobDescription.trim());
+                // Extract job title and company from first few lines
+                const lines = jobDescription.trim().split('\n').map(l => l.trim()).filter(Boolean);
+                const jobTitle = lines[0]?.slice(0, 80) || 'Untitled Job';
+                const company  = lines[1]?.slice(0, 80) || '';
                 await Job.create({
                     userId: req.user.id,
                     filename: result.filename,
                     originalText: jobDescription.trim(),
                     skills,
-                    jobTitle: ''
+                    jobTitle,
+                    company
                 });
             } catch (err) {
                 console.error('Failed to save Job record:', err.message);

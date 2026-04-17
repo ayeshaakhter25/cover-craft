@@ -1,0 +1,20 @@
+Job Title: Automation QA Engineer
+Compnay= Tensols
+Job Description:
+We are seeking an Automation QA Engineer to build robust automated testing frameworks and improve testing efficiency.
+
+Responsibilities:
+
+Develop automation frameworks from scratch
+Write automated test scripts for UI and APIs
+Integrate tests into CI/CD pipelines
+Analyze test results and debug failures
+Improve test coverage and efficiency
+
+Requirements:
+
+Strong experience with Selenium, Cypress, or Playwright
+Proficiency in Python/JavaScript
+Experience with CI/CD tools (Jenkins, GitHub Actions)
+Knowledge of test design patterns
+Understanding of API and performance testing

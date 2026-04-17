@@ -67,13 +67,14 @@
 .login-header {
   text-align: center;
   padding: 3.5rem 3rem 2.5rem;
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.9) 0%, 
-    rgba(139, 92, 246, 0.9) 50%, 
-    rgba(236, 72, 153, 0.9) 100%);
+  background: linear-gradient(135deg,
+    #0d1f3c 0%,
+    #1a3a6b 50%,
+    #112649 100%);
   color: white;
   position: relative;
   overflow: hidden;
+  border-bottom: 2px solid #C9A84C;
 }
 
 .login-header::before {
@@ -198,8 +199,8 @@
 
 .submit-button {
   width: 100%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: white;
+  background: linear-gradient(135deg, #C9A84C 0%, #9d7a2a 100%);
+  color: #fff;
   border: none;
   padding: 1.375rem 2rem;
   border-radius: 20px;
@@ -301,13 +302,13 @@
 .message.success {
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.28);
-  color: var(--success-color);
+  color: var(--success);
 }
 
 .message.error {
   background: rgba(239, 68, 68, 0.14);
   border: 1px solid rgba(239, 68, 68, 0.36);
-  color: var(--danger-color);
+  color: var(--danger);
 }
 
 .login-footer {

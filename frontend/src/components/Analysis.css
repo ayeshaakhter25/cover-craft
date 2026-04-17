@@ -126,22 +126,22 @@
   justify-content: center;
 }
 .analyze-btn {
-  background: var(--primary);
+  background: linear-gradient(135deg, #1a3a6b 0%, #0d1f3c 100%);
   color: #fff;
   font-size: 1rem;
-  font-weight: 600;
-  padding: .85rem 3.5rem;
+  font-weight: 700;
+  padding: .9rem 3.5rem;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all .2s;
+  transition: background .2s;
   min-width: 200px;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(37,99,235,.35);
+  box-shadow: 0 4px 14px rgba(13,31,60,.35);
+  letter-spacing: .01em;
 }
 .analyze-btn:hover:not(:disabled) {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37,99,235,.45);
+  background: linear-gradient(135deg, #C9A84C 0%, #9d7a2a 100%);
+  box-shadow: 0 4px 14px rgba(201,168,76,.4);
 }
-.analyze-btn:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+.analyze-btn:disabled { opacity: .65; cursor: not-allowed; }
