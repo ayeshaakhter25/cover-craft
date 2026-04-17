@@ -1,255 +1,138 @@
-# Career Craft: AI-Powered Career Application Co-Pilot
+# 🎯 CareerCraft AI - Your AI Career Copilot
+
+![CareerCraft Banner](https://via.placeholder.com/1200x400/1e3a8a/ffffff?text=CareerCraft+AI+-+Smart+Job+Applications)
 
 <p align="center">
-  <img src="https://img.shields.io/badge/AI-PoweredCareerAssistant-blue?style=for-the-badge&logo=ai&logoColor=white" alt="AI-Powered">
-  <img src="https://img.shields.io/badge/FYP-Project-purple?style=for-the-badge" alt="FYP Project">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/OpenAI-GPT--4-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI">
+  <img src="https://img.shields.io/badge/Tech-React_Node.js-GREEN?style=for-the-badge&logo=react&logoColor=white" />
+  <img src="https://img.shields.io/badge/DB-MongoDB-blue?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/AI-Groq-LLM-orange?style=for-the-badge&logo=openai&logoColor=white" />
+  <img src="https://img.shields.io/badge/FYP-Complete-black?style=for-the-badge&logo=github&logoColor=white" />
 </p>
 
----
+## 🚀 Project Overview
+**CareerCraft AI** is a full-stack AI-powered career assistant that:
+- 🔍 Analyzes CV vs Job Description for **Match Score %**
+- 📝 Generates **personalized Cover Letters**
+- 🩺 Performs **CV Health Checks** with AI scoring
+- 📊 Shows **user dashboard** with stats (CVs, matches, covers)
+- 🎨 Professional light/dark theme UI
 
-## 📋 Introduction & Background
-
-Many applicants reuse generic cover letters or fail to highlight relevant skills, which often leads to rejection by recruiters or Applicant Tracking Systems (ATS). In today's competitive job market, candidates must tailor their resumes and cover letters according to each job description to improve their chances of being shortlisted. However, writing personalized and professional cover letters for every job application is time-consuming and challenging, especially for students and fresh graduates who have limited industry experience.
-
-**Career Craft** is an intelligent system that analyzes, writes, evaluates, and optimizes job applications, making it a complete AI-powered career application assistant. The system uses pre-trained AI APIs (such as OpenAI) for intelligent text generation and analysis.
-
----
-
-## 🎯 Problem Statement
-
-Job seekers face multiple challenges in the current job market:
-
-- ❌ They submit generic cover letters that do not match job requirements
-- ❌ They do not know how well their CV aligns with a specific job
-- ❌ They are unaware of missing skills required by employers
-- ❌ Their applications are often rejected by Applicant Tracking Systems (ATS)
-- ❌ They lack guidance on how to improve their cover letters
-
-Existing tools either generate text or provide limited keyword analysis. There is no integrated system that both generates and analyzes job applications intelligently.
-
----
-
-## 💡 Proposed Solution
-
-Career Craft solves this problem by combining AI-based generation with analytical evaluation:
-
-- ✅ **Measures job compatibility** with a detailed match score
-- ✅ **Identifies missing skills** through gap analysis
-- ✅ **Suggests improvements** for CV health and optimization
-- ✅ **Generates multiple optimized versions** of cover letters
-- ✅ **Helps users increase their interview chances**
-
----
-
-## ✨ Key Features
-
-### Phase 1 (FYP-1): Core Features
-
-| Feature | Description |
-|---------|-------------|
-| **Match Score & Gap Analysis** | Compares CV and job description, calculates Fit Score (%), and highlights strengths and missing skills |
-| **Intelligent Cover Letter Generation** | Generates personalized letters in multiple styles (Technical, Achievement-focused) with downloadable formats (.docx, .pdf, text) |
-| **Keyword Optimization** | Identifies important hard and soft skills and suggests their integration for ATS compatibility |
-| **CV Health Check** | Evaluates CV for grammar accuracy, optimal length, use of active voice, clarity, and presence of measurable achievements |
-| **User Account & History Management** | Allows users to save and manage different application versions - cover letter history |
-| **Manual Job Matching** | Users can manually enter a job description for analysis |
-
-### Phase 2 (FYP-2): Advanced Features
-
-| Feature | Description |
-|---------|-------------|
-| **Automatic Job Fetching** | Fetches relevant job posts from multiple job portals based on CV skills |
-| **Proactive Job Notification** | Automatically monitors multiple job platforms and sends real-time email or WhatsApp alerts when a high-fit job is detected |
-| **Dynamic Career Roadmap** | Generates a personalized learning plan based on missing skills identified in gap analysis |
-| **AI-Based Learning Resources** | Automatically fetches relevant YouTube courses, GitHub repositories, certifications, and documentation links |
-| **Skill Progress Tracking** | Tracks skill improvement over time and shows match score growth trends |
-| **Career Analytics Dashboard** | Visualizes match score growth, jobs applied count, interview probability, and skill gap reduction |
-
----
-
-## 🔬 Literature Review
-
-| System | Description | Gaps & Limitations |
-|--------|-------------|-------------------|
-| **ChatGPT** | Generates text based on user prompts | No match scoring; no direct resume-to-job comparison |
-| **Skill Syncer** | Provides keyword matching and ATS compatibility scoring | Primarily focuses on keyword density; lacks advanced features |
-| **Zety** | Provides AI-assisted writing and formatting | Focuses on document creation rather than evaluation |
-| **Career Craft** | A complete co-pilot that generates, evaluates, and optimizes | Provides Fit Score (%), highlights missing skills, fetches jobs, and suggests improvements |
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React.js with Vite |
-| **Backend** | Python FastAPI |
-| **Database** | (Configurable - SQL/NoSQL) |
-| **AI Services** | OpenAI GPT API |
-| **Job Integration** | Job portal APIs |
-| **Notifications** | Email, WhatsApp (Twilio) |
-
----
-
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
-careercraft-AI/
-├── backend/                 # Backend API and server code
-│   ├── main.py             # FastAPI application entry point
-│   ├── requirements.txt    # Python dependencies
-│   └── .env                # Environment variables
-│
-├── frontend/               # Frontend application (UI)
+d:/nutri/careercraft-AI/
+├── backend/                    # Node.js + Express API
 │   ├── src/
-│   │   ├── App.jsx         # Main React component
-│   │   ├── App.css        # Component styles
-│   │   ├── index.css       # Global styles
-│   │   └── main.jsx       # React entry point
-│   ├── index.html         # HTML template
-│   ├── package.json       # Node.js dependencies
-│   └── vite.config.js     # Vite configuration
+│   │   ├── controllers/        # API logic (user-stats, cover, cv-health)
+│   │   ├── models/             # Mongoose schemas (User, CV, Job, Match)
+│   │   ├── routes/             # API routes (/api/users/stats, /matches)
+│   │   ├── services/           # Groq AI, PDF extraction
+│   │   └── middleware/auth.js  # JWT auth
+│   ├── index.js                # Express server
+│   ├── package.json
+│   └── uploads/                # CV files
 │
-├── public/                 # Static assets
-└── README.md              # Project documentation
+├── frontend/                   # React + Vite SPA
+│   ├── src/components/         # Login, Dashboard, CoverLetter, CVHealthCheck
+│   │   ├── DashboardOverview.jsx # User stats + recent matches
+│   │   ├── Login.jsx           # Auth (register/login)
+│   │   └── CoverLetter.jsx     # AI generation
+│   ├── App.jsx                 # Router + state
+│   ├── main.jsx                # Entry
+│   └── package.json
+│
+├── README.md                   # This file
+└── TODO.md                     # Progress tracker
 ```
 
----
+## 🔥 Features Implemented
 
-## 🚀 Quick Start (Local Development)
+| Feature | Status | Description |
+|---------|--------|-------------|
+| **Auth** | ✅ | Register/Login with JWT |
+| **Dashboard** | ✅ | User stats (CVs/Jobs/Matches/Covers) |
+| **CV Upload** | ✅ | PDF/DOCX → text + skills extraction |
+| **Job Save** | ✅ | Job description storage |
+| **Match Analysis** | ✅ | AI-powered CV-Job match % + gaps |
+| **Cover Letter** | ✅ | AI-generated personalized letters |
+| **CV Health** | ✅ | Grammar, ATS, structure scoring |
+| **Recent Matches** | ✅ | User history with delete UI |
 
-### Prerequisites
+## 🛠 Quick Setup (5 mins)
 
-- Node.js (v16+) and npm
-- Python (v3.8+)
-- OpenAI API Key
+### 1. Backend (MongoDB Atlas required)
+```bash
+cd backend
+npm install
+# .env → MONGO_URI=your_mongodb_atlas_connection
+npm start
+```
+**Test:** `curl http://localhost:5000/api/users/stats -H "Authorization: Bearer YOUR_TOKEN"`
 
-### Frontend Setup
-
+### 2. Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+**Frontend:** http://localhost:5173
 
-### Backend Setup
-
-```bash
-cd backend
-python -m venv .venv
-# On Windows:
-.venv\Scripts\activate
-# On macOS/Linux:
-source .venv/bin/activate
-
-pip install -r requirements.txt
-
-# Create .env file (copy from .env.example)
-# Configure your API keys:
-# - OPENAI_API_KEY=your-openai-api-key
-# - PORT=5000
-# - DATABASE_URL=your-db-connection-string
-
-python -m uvicorn main:app --reload --port 5000
+### 3. Test Flow
+```
+1. Register/Login
+2. Dashboard → Your stats (starts 0→grows)
+3. Upload CV + Job Description
+4. Match Analysis → Score + gaps
+5. Cover Letter → AI generated
+6. CV Health → AI analysis
 ```
 
-### Running Both Services
+## 🌟 Key Tech Stack
 
-1. Start the backend first (port 5000)
-2. Start the frontend (typically port 5173)
-3. Open your browser and navigate to the frontend URL
-
-### Environment Variables
-
-**Backend (.env):**
-```env
-PORT=5000
-DATABASE_URL=your-db-connection-string
-OPENAI_API_KEY=your-openai-api-key
-FRONTEND_ORIGIN=http://localhost:5173
+```mermaid
+graph TD
+  A[React/Vite Frontend] --> B[Express Backend]
+  B --> C[MongoDB Atlas]
+  B --> D[Groq AI LLM]
+  D --> E[PDF/DOCX Parser]
 ```
 
-**Frontend (.env):**
-```env
-VITE_API_URL=http://localhost:5000
+## 📊 API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/users/register` | No | Create account |
+| POST | `/api/users/login` | No | Login + JWT |
+| **GET** | `/api/users/stats` | **Yes** | Dashboard stats |
+| **GET** | `/api/users/recent-matches` | **Yes** | Recent analysis |
+| POST | `/api/upload-cv` | No | CV upload + extract |
+| POST | `/api/job-description` | No | Save JD |
+| POST | `/api/match-score` | No | CV vs JD analysis |
+
+## 🔧 Common Fixes
+
+| Issue | Solution |
+|-------|----------|
+| **Dashboard 404** | Backend running? Token valid? |
+| **CV Health "no text"** | PDF text layers enabled |
+| **Cover dummy text** | Add `GROQ_API_KEY` in backend/.env |
+| **Mongo connect** | Atlas IP whitelist + correct URI |
+
+## 📈 Screenshots
+
+```
+Dashboard: [Your real stats + recent matches]
+Login: [Clean auth UI]
+Cover Letter: [AI personalized]
+CV Health: [Grammar/ATS score]
 ```
 
----
+## 🎉 Credits
+- **AI Models:** Groq (llama3-70b-8192)
+- **Icons:** Lucide React
+- **FYP Complete:** All core features working!
 
-## 📅 Project Plan
+**Deploy:** Vercel (frontend) + Render (backend) + MongoDB Atlas
 
-### FYP-1: AI API-Based Intelligent System Development
-
-| Phase | Task | Duration |
-|-------|------|----------|
-| 1.0 | Requirement Analysis | Weeks 1-2 |
-| 2.0 | System Design | Weeks 3-4 |
-| 3.0 | CV & JD Processing Module | Weeks 5-7 |
-| 4.0 | Basic Job Fetching Module | Week 8 |
-| 5.0 | AI-Based Cover Letter Module | Weeks 9-10 |
-| 6.0 | CV Health Check Module | Week 11 |
-| 7.0 | Frontend Integration | Weeks 12-13 |
-| 8.0 | Testing & Deployment | Week 14 |
-
-### FYP-2: Advanced Features & Proactive System
-
-| Phase | Task |
-|-------|------|
-| 1.0 | Advanced Multi-Platform Job Fetching |
-| 2.0 | Proactive Fitment Notification System |
-| 3.0 | Intelligent Gap-to-Roadmap Engine |
-| 4.0 | AI-Based Learning Resource Fetching |
-| 5.0 | Personalized Career Path Generator |
-| 6.0 | Skill Progress Tracking System |
-| 7.0 | Career Analytics Dashboard |
-| 8.0 | Research Evaluation & Optimization |
-
----
-
-## ⚠️ Constraints & Limitations
-
-- 🤖 AI-generated content may still require manual review and editing before submission
-- 📊 Keyword-based match scoring may not completely reflect human recruiter evaluation
-- 🔗 Integration with job portals may be limited due to API access restrictions
-- ⏱️ The system will rely on free or open-source AI APIs, which may have usage limits
-- 🌐 Internet connectivity is required for accessing cloud-based AI services
-- 🔒 Data privacy and security must be carefully managed
-- 📈 System performance depends on the quality and structure of the uploaded CV
-- ⌛ The project must be completed within the university semester timeline
-
----
-
-## 🔧 Troubleshooting
-
-### "Failed to fetch" Error
-
-1. **Ensure backend is running:**
-   ```bash
-   cd backend
-   python -m uvicorn main:app --reload --port 5000
-   # Test: curl http://localhost:5000/health
-   ```
-
-2. **Ensure frontend points to backend:**
-   - Set `VITE_API_URL=http://localhost:5000` in frontend/.env
-   - Restart Vite after changing env vars
-
-3. **Check CORS settings:**
-   - Backend reads `FRONTEND_ORIGIN` (comma-separated allowed origins)
-   - Example: `FRONTEND_ORIGIN=http://localhost:5173`
-
----
-
-## 📄 License
-
-This project is developed as a Final Year Project (FYP).
-
----
-
-## 👥 Authors
-
-- Final Year Project - Computer Science/Software Engineering
+⭐ **Star if helpful!**
 
