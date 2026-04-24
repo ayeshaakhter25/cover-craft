@@ -7,6 +7,13 @@ const cvSchema = new mongoose.Schema({
   filePath: { type: String, required: true },
   extractedText: String,
   skills: [String],
+  matchingJobs: [{
+    title: String,
+    company: String,
+    location: String,
+    link: String,
+    snippet: String
+  }],
   fileSize: Number,
   mimeType: String,
   uploadedAt: { type: Date, default: Date.now }

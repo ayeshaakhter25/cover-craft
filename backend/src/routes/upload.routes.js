@@ -48,5 +48,8 @@ router.post('/upload-cv/multiple',
     uploadController.handleUploadError
 );
 
+// GET /api/upload-cv/:filename - Get CV data including matchingJobs
+router.get('/upload-cv/:filename', protect, uploadController.getCVByFilename);
+
 module.exports = router;
 

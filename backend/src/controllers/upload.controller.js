@@ -5,6 +5,7 @@
 
 const uploadService = require('../services/upload.service');
 const resumeService = require('../services/resume.service');
+const JobService = require('../services/job.service');
 const CV = require('../models/CV');
 
 // Multer configuration for CV uploads
@@ -66,7 +67,10 @@ const uploadCV = async (req, res) => {
         console.log('Extracted text length:', extractedText.length);
         console.log('Skills found:', skills);
 
-        // If user present (protected route), persist CV record
+        // Fetch matching jobs from Google
+        const matchingJobs = await JobService.fetchMatchingJobs(skills);
+
+        // If user present (protected route), persist CV record with jobs
         if (req.user && req.user.id) {
             try {
                 await CV.create({
@@ -76,6 +80,7 @@ const uploadCV = async (req, res) => {
                     filePath: filePath,
                     extractedText,
                     skills,
+                    matchingJobs,
                     fileSize: req.file.size,
                     mimeType: req.file.mimetype
                 });
@@ -88,7 +93,8 @@ const uploadCV = async (req, res) => {
             message: 'CV uploaded successfully',
             filename: req.file.filename,
             extractedText: extractedText,
-            skills: skills
+            skills: skills,
+            matchingJobs
         });
     } catch (error) {
         console.error('Error extracting text:', error);
@@ -123,9 +129,36 @@ const handleUploadError = (err, req, res, next) => {
     return;
 };
 
+// Get CV by filename (including matchingJobs)
+const getCVByFilename = async (req, res) => {
+    try {
+        const { filename } = req.params;
+        const userId = req.user.id;
+
+        const cv = await CV.findOne({ filename, userId })
+            .select('filename skills matchingJobs extractedText')
+            .lean();
+
+        if (!cv) {
+            return res.status(404).json({ message: 'CV not found' });
+        }
+
+        res.json({
+            filename: cv.filename,
+            skills: cv.skills || [],
+            matchingJobs: cv.matchingJobs || [],
+            extractedText: cv.extractedText || ''
+        });
+    } catch (error) {
+        console.error('Get CV error:', error);
+        res.status(500).json({ message: 'Error fetching CV', error: error.message });
+    }
+};
+
 module.exports = {
     upload,
     uploadCV,
-    handleUploadError
+    handleUploadError,
+    getCVByFilename
 };
 

@@ -28,7 +28,7 @@ export default function Header({ user, onLogout }) {
           <NavLink to="/"        end className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Dashboard</NavLink>
           <NavLink to="/analysis"    className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Analysis</NavLink>
           <NavLink to="/cover"       className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Cover Letter</NavLink>
-          <NavLink to="/cv-health"   className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>CV Health</NavLink>
+          {/* <NavLink to="/cv-health"   className={({ isActive }) => `hdr-link ${isActive ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>CV Health</NavLink> */}
         </nav>
 
         {/* Right actions */}

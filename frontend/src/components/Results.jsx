@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Results.css';
+import JobMatches from './JobMatches';
 
 /* ── SVG circular gauge ── */
 function Gauge({ value }) {
@@ -46,8 +47,30 @@ function HealthRow({ label, status }) {
   );
 }
 
-export default function Results({ matchResult, skills }) {
+export default function Results({ apiBase, matchResult, skills, extractedText, matchingJobs, uploadedFilename }) {
   const navigate = useNavigate();
+  const [localJobs, setLocalJobs] = useState(matchingJobs || []);
+
+  /* ── fallback: fetch jobs from DB if not passed via state ── */
+  useEffect(() => {
+    if ((!matchingJobs || matchingJobs.length === 0) && uploadedFilename && apiBase) {
+      const fetchJobs = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const res = await fetch(`${apiBase}/api/upload-cv/${encodeURIComponent(uploadedFilename)}`, {
+            headers: { 'Authorization': token ? `Bearer ${token}` : '' }
+          });
+          const data = await res.json();
+          if (res.ok) setLocalJobs(data.matchingJobs || []);
+        } catch (err) {
+          console.error('Results fetch jobs error:', err);
+        }
+      };
+      fetchJobs();
+    } else {
+      setLocalJobs(matchingJobs || []);
+    }
+  }, [matchingJobs, uploadedFilename, apiBase]);
 
   if (!matchResult) {
     return (
@@ -85,85 +108,108 @@ export default function Results({ matchResult, skills }) {
   return (
     <div className="results-page">
 
-      {/* ── Top row (Gauge + Skill Gap) ── */}
-      <div className="results-top">
+      {/* ═══════════════════════════════════════════
+          MAIN + RIGHT PANEL LAYOUT
+         ═══════════════════════════════════════════ */}
+      <div className="results-layout">
 
-        {/* Match Gauge */}
-        <div className="card results-card gauge-card">
-          <h3 className="rc-title">Match Score Gauge</h3>
-          <div className="gauge-wrap">
-            <Gauge value={score} />
-            <p className="gauge-sub">Software Engineer</p>
-          </div>
-          <div className="gauge-footer">
-            Recommended: Software Engineer @ this role → cover-gen
-          </div>
-        </div>
+        {/* Left – Main Results */}
+        <div className="results-main">
 
-        {/* Skill Gap */}
-        <div className="card results-card skill-card">
-          <h3 className="rc-title">Skill Gap Analysis</h3>
-          <div className="skill-cols">
-            <div className="skill-col">
-              <div className="skill-col-head">Skills You Have</div>
-              <div className="tags">
-                {matching.length === 0 && <span className="no-skills">None matched</span>}
-                {matching.map((s, i) => <span key={i} className="tag tag-green">{s}</span>)}
+          {/* ── Top row (Gauge + Skill Gap) ── */}
+          <div className="results-top">
+
+            {/* Match Gauge */}
+            <div className="card results-card gauge-card">
+              <h3 className="rc-title">Match Score Gauge</h3>
+              <div className="gauge-wrap">
+                <Gauge value={score} />
+                <p className="gauge-sub">Software Engineer</p>
+              </div>
+              <div className="gauge-footer">
+                Recommended: Software Engineer @ this role → cover-gen
               </div>
             </div>
-            <div className="skill-col">
-              <div className="skill-col-head missing">Missing Skills</div>
-              <div className="tags">
-                {missing.length === 0 && <span className="no-skills" style={{color:'var(--success)'}}>All skills matched! 🎉</span>}
-                {missing.map((s, i) => (
-                  <span key={i} className={`tag ${i % 2 === 0 ? 'tag-red' : 'tag-orange'}`}>{s}</span>
+
+            {/* Skill Gap */}
+            <div className="card results-card skill-card">
+              <h3 className="rc-title">Skill Gap Analysis</h3>
+              <div className="skill-cols">
+                <div className="skill-col">
+                  <div className="skill-col-head">Skills You Have</div>
+                  <div className="tags">
+                    {matching.length === 0 && <span className="no-skills">None matched</span>}
+                    {matching.map((s, i) => <span key={i} className="tag tag-green">{s}</span>)}
+                  </div>
+                </div>
+                <div className="skill-col">
+                  <div className="skill-col-head missing">Missing Skills</div>
+                  <div className="tags">
+                    {missing.length === 0 && <span className="no-skills" style={{color:'var(--success)'}}>All skills matched! 🎉</span>}
+                    {missing.map((s, i) => (
+                      <span key={i} className={`tag ${i % 2 === 0 ? 'tag-red' : 'tag-orange'}`}>{s}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ── Bottom row (Health + Tips) ── */}
+          <div className="results-bottom">
+
+            {/* CV Health Check */}
+            <div className="card results-card health-card">
+              <h3 className="rc-title">CV Health Check™ Card</h3>
+              <div className="health-list">
+                {health.map((h, i) => <HealthRow key={i} label={h.label} status={h.status} />)}
+              </div>
+              <p className="health-note">
+                Recommendations and keywords found consistently in starters in reactors.
+              </p>
+            </div>
+
+            {/* Optimization Tips */}
+            <div className="card results-card tips-card">
+              <h3 className="rc-title">Optimization Tips</h3>
+              <ul className="tips-list">
+                {tips.map((t, i) => (
+                  <li key={i} className="tip-item">
+                    <span className="tip-num">{i + 1}</span>
+                    <span>{t}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
+            </div>
+
+          </div>
+
+          {/* ── Actions ── */}
+          <div className="results-actions">
+            <button className="btn btn-primary" onClick={() => navigate('/cover')}>
+              ✨ Generate Cover Letter
+            </button>
+            <button className="btn btn-ghost" onClick={() => navigate('/analysis')}>
+              ← New Analysis
+            </button>
+          </div>
+
+        </div>
+
+        {/* Right – Jobs Panel */}
+        {localJobs.length > 0 && (
+          <div className="results-right-panel">
+            <div className="card jobs-panel-card">
+              <h3 className="rc-title">🎯 Matching Jobs</h3>
+              <JobMatches jobs={localJobs} />
             </div>
           </div>
-        </div>
+        )}
 
-      </div>
-
-      {/* ── Bottom row (Health + Tips) ── */}
-      <div className="results-bottom">
-
-        {/* CV Health Check */}
-        <div className="card results-card health-card">
-          <h3 className="rc-title">CV Health Check™ Card</h3>
-          <div className="health-list">
-            {health.map((h, i) => <HealthRow key={i} label={h.label} status={h.status} />)}
-          </div>
-          <p className="health-note">
-            Recommendations and keywords found consistently in starters in reactors.
-          </p>
-        </div>
-
-        {/* Optimization Tips */}
-        <div className="card results-card tips-card">
-          <h3 className="rc-title">Optimization Tips</h3>
-          <ul className="tips-list">
-            {tips.map((t, i) => (
-              <li key={i} className="tip-item">
-                <span className="tip-num">{i + 1}</span>
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-      </div>
-
-      {/* ── Actions ── */}
-      <div className="results-actions">
-        <button className="btn btn-primary" onClick={() => navigate('/cover')}>
-          ✨ Generate Cover Letter
-        </button>
-        <button className="btn btn-ghost" onClick={() => navigate('/analysis')}>
-          ← New Analysis
-        </button>
       </div>
 
     </div>
   );
 }
+

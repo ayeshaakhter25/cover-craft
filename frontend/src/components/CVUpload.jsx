@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import './CVUpload.css';
 import SkillDisplay from './SkillDisplay';
+import JobMatches from './JobMatches';
 
 const CVUpload = () => {
     const [file, setFile] = useState(null);
     const [extractedText, setExtractedText] = useState('');
     const [skills, setSkills] = useState([]);
+    const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+    const [activeTab, setActiveTab] = useState('skills');
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -49,6 +52,7 @@ const CVUpload = () => {
                 setMessage(data.message);
                 setExtractedText(data.extractedText || '');
                 setSkills(data.skills || []);
+                setJobs(data.matchingJobs || []);
             } else {
                 setMessage(data.message || 'Error uploading file');
             }
@@ -94,8 +98,31 @@ const CVUpload = () => {
                 </div>
             )}
             
-            {skills.length > 0 && (
-                <SkillDisplay skills={skills} />
+            {(skills.length > 0 || jobs.length > 0) && (
+                <div className="results-tabs">
+                    <div className="tab-buttons">
+                        <button 
+                            className={`tab-btn ${activeTab === 'skills' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('skills')}
+                        >
+                            Skills ({skills.length})
+                        </button>
+                        <button 
+                            className={`tab-btn ${activeTab === 'jobs' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('jobs')}
+                        >
+                            Matching Jobs ({jobs.length})
+                        </button>
+                    </div>
+                    <div className="tab-content">
+                        {activeTab === 'skills' && skills.length > 0 && (
+                            <SkillDisplay skills={skills} />
+                        )}
+                        {activeTab === 'jobs' && (
+                            <JobMatches jobs={jobs} />
+                        )}
+                    </div>
+                </div>
             )}
         </div>
     );

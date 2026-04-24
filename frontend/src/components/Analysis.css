@@ -145,3 +145,241 @@
   box-shadow: 0 4px 14px rgba(201,168,76,.4);
 }
 .analyze-btn:disabled { opacity: .65; cursor: not-allowed; }
+
+/* ── Tabs (Skills + Jobs) ── */
+.analysis-tabs {
+  margin-top: 1.5rem;
+}
+
+.tab-buttons {
+  display: flex;
+  border-bottom: 2px solid var(--card-border, #e2e8f0);
+  margin-bottom: 1.25rem;
+  gap: .25rem;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: .75rem 1.25rem;
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+  border-radius: 6px 6px 0 0;
+}
+
+.tab-btn.active {
+  color: var(--primary, #1a3a6b);
+  border-bottom-color: var(--primary, #1a3a6b);
+  background: rgba(26,58,107,.06);
+}
+
+.tab-btn:hover:not(.active) {
+  color: var(--text-primary, #0f172a);
+  background: rgba(148,163,184,.08);
+}
+
+.tab-content {
+  animation: fadeIn .25s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Right Panel Jobs ── */
+.right-panel {
+  gap: 1.25rem;
+}
+.right-jobs {
+  margin-top: .5rem;
+  max-height: 520px;
+  overflow-y: auto;
+}
+.right-jobs .job-matches h3 {
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+.right-jobs .jobs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+.right-jobs .job-card {
+  padding: 1rem;
+  border-radius: 10px;
+}
+.right-jobs .job-title {
+  font-size: .95rem;
+}
+.right-jobs .job-snippet {
+  font-size: .82rem;
+  margin-bottom: .75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.right-jobs .apply-button {
+  padding: .5rem 1rem;
+  font-size: .85rem;
+}
+
+/* ── Inline Results Section ── */
+.analysis-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn .4s ease-in;
+}
+
+.results-top,
+.results-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 768px) {
+  .results-top, .results-bottom { grid-template-columns: 1fr; }
+}
+
+.results-card {
+  padding: 1.5rem;
+}
+.rc-title {
+  font-size: .82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--primary);
+  margin: 0 0 1.25rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid #C9A84C;
+  display: inline-block;
+}
+
+/* Gauge */
+.gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+}
+.gauge-svg { display: block; }
+.gauge-pct  { font-size: 1.5rem; font-weight: 800; }
+.gauge-label{ font-size: .72rem; }
+.gauge-sub  { font-size: .85rem; color: var(--text-secondary); margin: 0; font-weight: 600; }
+.gauge-footer {
+  margin-top: 1rem;
+  font-size: .78rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: .5rem;
+  background: var(--page-bg);
+  border-radius: 6px;
+}
+
+/* Skill gap */
+.skill-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.skill-col-head {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.skill-col-head.missing { color: var(--danger); }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.no-skills { font-size: .82rem; color: var(--text-muted); }
+.tag {
+  font-size: .78rem;
+  padding: .3rem .6rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.tag-green  { background: #dcfce7; color: #166534; }
+.tag-red    { background: #fee2e2; color: #991b1b; }
+.tag-orange { background: #ffedd5; color: #9a3412; }
+
+/* Health */
+.health-list {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  margin-bottom: 1rem;
+}
+.health-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-size: .9rem;
+  color: var(--text-primary);
+  padding: .5rem .75rem;
+  border-radius: 8px;
+  background: var(--page-bg);
+  border: 1px solid var(--card-border);
+}
+.health-label { font-weight: 500; }
+.health-note  {
+  font-size: .78rem;
+  color: var(--text-muted);
+  margin: 0;
+  padding-top: .75rem;
+  border-top: 1px solid var(--card-border);
+}
+
+/* Jobs in results */
+.jobs-result-card .job-matches {
+  margin-top: 0;
+}
+.jobs-result-card .jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* Tips */
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  font-size: .88rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.tip-num {
+  background: linear-gradient(135deg, #1a3a6b, #0d1f3c);
+  color: #C9A84C;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}

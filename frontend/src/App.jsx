@@ -51,6 +51,7 @@ export default function App() {
   const [skills,           setSkills]           = useState([]);
   const [jdFilename,       setJdFilename]       = useState('');
   const [matchResult,      setMatchResult]      = useState(null);
+  const [matchingJobs,     setMatchingJobs]     = useState([]);
 
   /* Dashboard data */
   const [dashboardStats,  setDashboardStats]  = useState(null);
@@ -143,6 +144,7 @@ export default function App() {
               <p>Loading dashboard…</p>
             </div>
           : <DashboardOverview
+              apiBase={apiBase}
               stats={dashboardStats || {
                 userName:       user?.name || 'User',
                 cvUploads:      0,
@@ -163,6 +165,7 @@ export default function App() {
           setSkills={setSkills}
           setJdFilename={setJdFilename}
           setMatchResult={setMatchResult}
+          setMatchingJobs={setMatchingJobs}
           addToast={addToast}
         />
       )} />
@@ -170,9 +173,12 @@ export default function App() {
       {/* Results */}
       <Route path="/results" element={wrap(
         <Results
+          apiBase={apiBase}
           matchResult={matchResult}
           skills={skills}
           extractedText={extractedText}
+          matchingJobs={matchingJobs}
+          uploadedFilename={uploadedFilename}
         />
       )} />
 

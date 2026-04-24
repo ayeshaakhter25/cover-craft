@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Analysis.css';
 
-export default function Analysis({ apiBase, uploadedFilename, setUploadedFilename, setExtractedText, setSkills, setJdFilename, setMatchResult, addToast }) {
+export default function Analysis({ apiBase, uploadedFilename, setUploadedFilename, setExtractedText, setSkills, setJdFilename, setMatchResult, setMatchingJobs, addToast }) {
   const [jdText, setJdText]     = useState('');
   const [file, setFile]         = useState(null);
   const [filePreview, setFilePreview] = useState('');
@@ -40,10 +40,26 @@ export default function Analysis({ apiBase, uploadedFilename, setUploadedFilenam
       setUploadedFilename(data.filename);
       setExtractedText(data.extractedText || '');
       setSkills(data.skills || []);
+      setMatchingJobs(data.matchingJobs || []);
       return data.filename;
     }
     addToast(data.message || 'Upload failed', 'error');
     return null;
+  };
+
+  const fetchJobsForExistingCV = async (filename) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiBase}/api/upload-cv/${encodeURIComponent(filename)}`, {
+        headers: { 'Authorization': token ? `Bearer ${token}` : '' }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMatchingJobs(data.matchingJobs || []);
+      }
+    } catch (err) {
+      console.error('Fetch existing CV jobs error:', err);
+    }
   };
 
   const saveJob = async () => {
@@ -70,6 +86,11 @@ export default function Analysis({ apiBase, uploadedFilename, setUploadedFilenam
       let resume = uploadedFilename;
       if (!resume && file) resume = await uploadCV();
       if (!resume) { setLoading(false); return; }
+
+      /* fetch jobs for previously uploaded CV if not already loaded */
+      if (uploadedFilename && !file) {
+        await fetchJobsForExistingCV(uploadedFilename);
+      }
 
       let jobFile = null;
       if (jdText.trim()) jobFile = await saveJob();
@@ -144,7 +165,6 @@ export default function Analysis({ apiBase, uploadedFilename, setUploadedFilenam
             </div>
           )}
 
-          {/* Preview area mimicking a resume card */}
           {filePreview && (
             <div className="cv-preview-box">
               <div className="cv-preview-lines">
@@ -176,3 +196,4 @@ export default function Analysis({ apiBase, uploadedFilename, setUploadedFilenam
     </div>
   );
 }
+

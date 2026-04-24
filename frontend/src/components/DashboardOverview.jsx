@@ -10,7 +10,7 @@ function scoreColor(s) {
   return '#dc2626';                 // red
 }
 
-export default function DashboardOverview({ stats, recentMatches }) {
+export default function DashboardOverview({ apiBase, stats, recentMatches }) {
   const navigate = useNavigate();
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,7 +27,7 @@ export default function DashboardOverview({ stats, recentMatches }) {
     
     setIsDeleting(true);
     try {
-      const response = await fetch(`/api/users/matches/${deleteConfirm.id}`, {
+      const response = await fetch(`${apiBase}/api/users/matches/${deleteConfirm.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
