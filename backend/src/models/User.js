@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  notificationPreferences: {
+    emailEnabled: { type: Boolean, default: true },
+    minimumMatchScore: { type: Number, default: 80, min: 0, max: 100 }
+  },
   createdAt: { type: Date, default: Date.now }
 });
 
