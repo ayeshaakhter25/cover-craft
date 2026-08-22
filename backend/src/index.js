@@ -19,6 +19,7 @@ const skillRoutes = require('./routes/skill.routes');
 const matchRoutes = require('./routes/match.routes');
 const userRoutes = require('./routes/user.routes');
 const coverRoutes = require('./routes/cover.routes');
+const JobSyncService = require('./services/job-sync.service');
 
 // Initialize Express app
 const app = express();
@@ -91,6 +92,7 @@ connectDB().then(() => {
     console.log(`📋 Test endpoint: http://localhost:${PORT}/api/test`);
     console.log(`🔐 Auth endpoints ready: /api/users/register & /api/users/login`);
   });
+  JobSyncService.start();
 }).catch((err) => {
   console.error('Failed to connect DB:', err);
 });

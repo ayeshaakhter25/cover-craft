@@ -10,5 +10,7 @@ const matchSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+matchSchema.index({ userId: 1, cvId: 1, jobId: 1 }, { unique: true, sparse: true });
+
 module.exports = mongoose.model('Match', matchSchema);
 
