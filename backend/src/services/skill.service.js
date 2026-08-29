@@ -8,9 +8,9 @@ class SkillService {
      * Predefined list of skills (expanded for better CV matching)
      */
     static SKILLS = [
-        'React', 'React Native', 'JavaScript', 'Node.js', 'Express', 'MongoDB', 
+        'React', 'React Native', 'JavaScript', 'TypeScript', 'Next.js', 'Redux', 'Node.js', 'Express', 'MongoDB', 
         'Python', 'Django', 'Odoo', 'MERN', 'MERN Stack', 'SQL', 'MySQL', 'Git', 'GitHub', 
-        'AWS', 'Jenkins', 'Docker', 'Linux', 'Bootstrap', 'HTML', 'CSS', 
+        'AWS', 'Kubernetes', 'Terraform', 'Jenkins', 'Docker', 'Linux', 'Bootstrap', 'HTML', 'CSS', 'GraphQL', 
         'Java', 'C++', 'PHP', 'Firebase', 'CI/CD', 'Machine Learning', 'Deep Learning',
         'Communication', 'Leadership', 'Project Management', 'Jira', 'Asana', 'Trello', 'VS Code'
     ];

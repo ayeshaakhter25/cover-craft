@@ -41,7 +41,10 @@ const saveJobDescription = async (req, res) => {
                     skills,
                     jobTitle,
                     company,
-                    source: 'manual'
+                    source: 'manual',
+                    // Avoid the legacy source/externalJobId unique index treating
+                    // multiple null manual IDs as duplicates.
+                    externalJobId: `manual-${req.user.id}-${result.filename}`
                 });
             } catch (err) {
                 console.error('Failed to save Job record:', err.message);

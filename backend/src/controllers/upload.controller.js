@@ -7,6 +7,7 @@ const uploadService = require('../services/upload.service');
 const resumeService = require('../services/resume.service');
 const JobService = require('../services/job.service');
 const CV = require('../models/CV');
+const JobSyncService = require('../services/job-sync.service');
 
 // Multer configuration for CV uploads
 const multer = require('multer');
@@ -84,6 +85,9 @@ const uploadCV = async (req, res) => {
                     fileSize: req.file.size,
                     mimeType: req.file.mimetype
                 });
+                // Fetch and persist jobs immediately for this new CV. The
+                // scheduler continues to refresh them afterwards.
+                await JobSyncService.sync({ userId: req.user.id });
             } catch (err) {
                 console.error('Failed to save CV record:', err.message);
             }

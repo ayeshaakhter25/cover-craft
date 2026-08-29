@@ -12,6 +12,7 @@ import CoverLetter    from './components/CoverLetter';
 import CVHealthCheck  from './components/CVHealthCheck';
 import Tests          from './components/Tests';
 import RelevantJobs   from './components/RelevantJobs';
+import CareerRoadmap  from './components/CareerRoadmap';
 
 const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -194,6 +195,7 @@ export default function App() {
       )} />
 
       <Route path="/jobs" element={wrap(<RelevantJobs apiBase={apiBase} addToast={addToast} />)} />
+      <Route path="/roadmap" element={wrap(<CareerRoadmap apiBase={apiBase} addToast={addToast} />)} />
 
       {/* CV Health */}
       <Route path="/cv-health" element={wrap(

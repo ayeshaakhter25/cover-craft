@@ -62,5 +62,22 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getNotificationPreferences = async (req, res) => {
+  const saved = req.user.notificationPreferences || {};
+  res.json({ notificationPreferences: {
+    emailEnabled: saved.emailEnabled !== false,
+    minimumMatchScore: saved.minimumMatchScore ?? 80
+  } });
+};
+
+const updateNotificationPreferences = async (req, res) => {
+  const { emailEnabled, minimumMatchScore } = req.body;
+  if (typeof emailEnabled !== 'boolean' || !Number.isFinite(minimumMatchScore) || minimumMatchScore < 0 || minimumMatchScore > 100) {
+    return res.status(400).json({ message: 'emailEnabled and a minimumMatchScore from 0 to 100 are required' });
+  }
+  const user = await User.findByIdAndUpdate(req.user._id, { $set: { notificationPreferences: { emailEnabled, minimumMatchScore } } }, { new: true });
+  res.json({ notificationPreferences: user.notificationPreferences });
+};
+
+module.exports = { registerUser, loginUser, getNotificationPreferences, updateNotificationPreferences };
 
