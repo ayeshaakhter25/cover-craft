@@ -54,16 +54,21 @@ const getRecentMatches = async (req, res) => {
   try {
     const userId = req.user.id;
 
+    // A dashboard "analysis" means a user deliberately analysed their CV
+    // against a pasted JD. Background job matches belong on the Jobs page.
     const matches = await Match.find({ userId })
       .sort({ createdAt: -1 })
-      .limit(10)  // Show more matches
-      .populate('jobId', 'jobTitle company')
+      .limit(100)
+      .populate('jobId', 'title jobTitle company source userId')
       .lean();
 
-    const recentMatches = matches.map(match => ({
+    const recentMatches = matches
+      .filter(match => match.analysisType === 'MANUAL' || (match.jobId?.source === 'manual' && String(match.jobId?.userId) === String(userId)))
+      .slice(0, 10)
+      .map(match => ({
       id: match._id,
       score: Math.round(match.matchScore),
-      jobTitle: match.jobId?.jobTitle || 'Untitled Job',
+      jobTitle: match.jobId?.title || match.jobId?.jobTitle || 'Untitled Job',
       company: match.jobId?.company || 'Unknown Company',
       createdAt: match.createdAt
     }));
@@ -73,6 +78,26 @@ const getRecentMatches = async (req, res) => {
     console.error('Recent matches error:', error);
     res.status(500).json({ message: 'Error fetching recent matches' });
   }
+};
+
+// Get all persisted details for one analysis. Ownership is enforced by userId.
+const getMatchDetail = async (req, res) => {
+  try {
+    const match = await Match.findOne({ _id: req.params.id, userId: req.user.id })
+      .populate('cvId', 'originalName filename skills extractedText')
+      .populate('jobId', 'title jobTitle company location description originalText skills jobUrl source')
+      .lean();
+    if (!match || (!match.analysisType && match.jobId?.source !== 'manual') || (match.analysisType === 'AUTOMATED')) return res.status(404).json({ message: 'Analysis not found' });
+    res.json({
+      id: match._id, matchScore: match.matchScore, matchingSkills: match.matchingSkills || [],
+      missingSkills: match.missingSkills || [], createdAt: match.createdAt, cv: match.cvId,
+      job: match.jobId ? {
+        title: match.jobId.title || match.jobId.jobTitle || 'Untitled Job', company: match.jobId.company,
+        location: match.jobId.location, description: match.jobId.description || match.jobId.originalText || '',
+        skills: match.jobId.skills || [], jobUrl: match.jobId.jobUrl, source: match.jobId.source
+      } : null
+    });
+  } catch (error) { res.status(500).json({ message: 'Error fetching analysis details' }); }
 };
 
 // Delete a specific match
@@ -100,5 +125,6 @@ const deleteMatch = async (req, res) => {
 module.exports = {
   getDashboardStats,
   getRecentMatches,
+  getMatchDetail,
   deleteMatch
 };

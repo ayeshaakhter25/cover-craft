@@ -96,7 +96,7 @@ export default function DashboardOverview({ apiBase, stats, recentMatches }) {
               {matches.map((m, i) => {
                 const sc = m.score ?? m.matchScore ?? 0;
                 return (
-                  <li key={m.id || i} className="activity-item">
+                  <li key={m.id || i} className="activity-item activity-item-clickable" onClick={() => navigate(`/analysis-history/${m.id}`)} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter') navigate(`/analysis-history/${m.id}`); }}>
                     <span className="activity-icon">{COMPANY_ICONS[i % COMPANY_ICONS.length]}</span>
                     <div className="activity-info">
                       <span className="activity-title">{m.jobTitle && m.jobTitle !== 'Untitled Job' ? m.jobTitle : `Job ${i + 1}`}</span>
@@ -108,7 +108,7 @@ export default function DashboardOverview({ apiBase, stats, recentMatches }) {
                     >{sc}%</span>
                     <button 
                       className="delete-btn" 
-                      onClick={() => handleDeleteClick(m.id, m.jobTitle || `Job ${i + 1}`)}
+                      onClick={(event) => { event.stopPropagation(); handleDeleteClick(m.id, m.jobTitle || `Job ${i + 1}`); }}
                       title="Delete analysis"
                     >
                       🗑️

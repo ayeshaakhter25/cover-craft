@@ -7,6 +7,9 @@ const matchSchema = new mongoose.Schema({
   matchScore: { type: Number, required: true },
   matchingSkills: [String],
   missingSkills: [String],
+  // MANUAL means the user pasted a JD and deliberately ran Analysis.
+  // AUTOMATED is created by the background job matcher.
+  analysisType: { type: String, enum: ['MANUAL', 'AUTOMATED'], default: 'AUTOMATED' },
   createdAt: { type: Date, default: Date.now }
 });
 
