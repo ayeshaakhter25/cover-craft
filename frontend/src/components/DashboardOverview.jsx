@@ -16,6 +16,7 @@ export default function DashboardOverview({ apiBase, stats, recentMatches }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const s = stats || { userName: 'User', cvUploads: 0, avgMatchScore: 0, coversGenerated: 0 };
+  const a = s.analytics || { currentScore: s.avgMatchScore || 0, previousScore: 0, scoreImprovement: 0, skillsDone: 0, initialGaps: 0, remainingGaps: 0, skillGapReduction: 0, jobsRecommended: 0, jobsViewed: 0, jobsSaved: 0, jobsApplied: 0, interviewProbability: 0, careerProgress: 0, interviewNote: 'Estimate based on currently available information.' };
   const matches = recentMatches || [];
 
   const handleDeleteClick = (matchId, jobTitle) => {
@@ -61,27 +62,65 @@ export default function DashboardOverview({ apiBase, stats, recentMatches }) {
         <div className="stat-card">
           <div className="stat-icon-wrap si-blue">📄</div>
           <div>
-            <div className="stat-val">{s.cvUploads}</div>
-            <div className="stat-lbl">Total CVs Analyzed</div>
+            <div className="stat-val">{a.currentScore}%</div>
+            <div className="stat-lbl">Current Match Score</div>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon-wrap si-green">🎯</div>
           <div>
-            <div className="stat-val">{s.avgMatchScore}%</div>
-            <div className="stat-lbl">Average Match Score</div>
+            <div className="stat-val">{a.skillsDone}</div>
+            <div className="stat-lbl">Skills Completed</div>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon-wrap si-orange">💼</div>
           <div>
-            <div className="stat-val">{s.coversGenerated}</div>
-            <div className="stat-lbl">Job Applications</div>
+            <div className="stat-val">{a.jobsRecommended}</div>
+            <div className="stat-lbl">Jobs Found</div>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon-wrap si-blue">+</div>
+          <div>
+            <div className="stat-val">{a.jobsApplied}</div>
+            <div className="stat-lbl">Applications</div>
           </div>
         </div>
       </div>
+
+      <section className="analytics-grid">
+        <article className="analytics-card">
+          <h3>Match Score Growth</h3>
+          <div className="metric-compare"><span>Previous <b>{a.previousScore}%</b></span><span>Current <b>{a.currentScore}%</b></span></div>
+          <p className={a.scoreImprovement >= 0 ? 'metric-positive' : 'metric-negative'}>{a.scoreImprovement >= 0 ? '+' : ''}{a.scoreImprovement}% improvement</p>
+        </article>
+        <article className="analytics-card">
+          <h3>Skill Gap Reduction</h3>
+          <p className="analytics-value">{a.skillGapReduction}%</p>
+          <p>{a.initialGaps} initial gaps → {a.remainingGaps} remaining</p>
+          <div className="analytics-bar"><i style={{ width: `${a.skillGapReduction}%` }} /></div>
+        </article>
+        <article className="analytics-card estimate-card">
+          <h3>Interview Probability Indicator</h3>
+          <p className="analytics-value">{a.interviewProbability}%</p>
+          <div className="analytics-bar"><i style={{ width: `${a.interviewProbability}%` }} /></div>
+          <small>{a.interviewNote}</small>
+        </article>
+        <article className="analytics-card progress-card">
+          <h3>Overall Career Progress</h3>
+          <p className="analytics-value">{a.careerProgress}%</p>
+          <div className="analytics-bar"><i style={{ width: `${a.careerProgress}%` }} /></div>
+          <small>Based on match, skill completion, roadmap, and applications.</small>
+        </article>
+      </section>
+
+      <section className="job-statistics card">
+        <h3 className="card-section-title">Job Statistics</h3>
+        <div className="job-stat-grid"><span><b>{a.jobsRecommended}</b> Jobs Recommended</span><span><b>{a.jobsViewed}</b> Jobs Viewed</span><span><b>{a.jobsSaved}</b> Jobs Saved</span><span><b>{a.jobsApplied}</b> Jobs Applied</span></div>
+      </section>
 
       {/* ── Middle ── */}
       <div className="dash-main">

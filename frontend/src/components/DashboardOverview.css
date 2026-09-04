@@ -106,6 +106,9 @@
   transform: translateX(3px);
   box-shadow: 0 4px 12px rgba(201, 168, 76, 0.15);
 }
+.analytics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.25rem; margin-bottom:1.25rem; }
+.analytics-card,.job-statistics { background:var(--card-bg,#fff); border:1px solid var(--card-border,#e2e8f0); border-radius:12px; padding:1.25rem; box-shadow:var(--shadow-sm); }
+.analytics-card h3 { margin:0 0 .75rem; color:#0d1f3c; font-size:1rem; }.analytics-card p { color:#64748b; margin:.4rem 0; }.analytics-value { color:#0d1f3c!important; font-size:1.8rem; font-weight:900; }.metric-compare { display:flex; justify-content:space-between; gap:.5rem; color:#64748b; font-size:.85rem; }.metric-compare b { display:block; color:#0d1f3c; font-size:1.1rem; }.metric-positive { color:#15803d!important; font-weight:800; }.metric-negative { color:#b91c1c!important; font-weight:800; }.analytics-bar { height:9px; background:#e2e8f0; border-radius:99px; overflow:hidden; margin:.7rem 0; }.analytics-bar i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#1a3a6b,#c9a84c); }.estimate-card small,.progress-card small { color:#64748b; line-height:1.35; display:block; }.job-statistics { margin-bottom:1.25rem; }.job-stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:1rem; }.job-stat-grid span { color:#64748b; font-size:.88rem; }.job-stat-grid b { display:block; color:#0d1f3c; font-size:1.5rem; }
 .activity-item-clickable { cursor: pointer; }
 .activity-icon {
   font-size: 1.2rem;
