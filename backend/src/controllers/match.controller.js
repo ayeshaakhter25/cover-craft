@@ -70,7 +70,8 @@ const calculateMatchScore = async (req, res) => {
                     jobId: jobDoc?._id || null,
                     matchScore: result.matchScore,
                     matchingSkills: result.matchingSkills,
-                    missingSkills: result.missingSkills
+                    missingSkills: result.missingSkills,
+                    analysisType: 'MANUAL'
                 });
             } catch (err) {
                 console.error('Failed to save Match record:', err.message);

@@ -21,6 +21,7 @@ const userRoutes = require('./routes/user.routes');
 const coverRoutes = require('./routes/cover.routes');
 const JobSyncService = require('./services/job-sync.service');
 const roadmapRoutes = require('./routes/roadmap.routes');
+const learningResourceRoutes = require('./routes/learning-resource.routes');
 
 // Initialize Express app
 const app = express();
@@ -47,6 +48,7 @@ app.use('/api', matchRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/cover', coverRoutes);
 app.use('/api/roadmaps', roadmapRoutes);
+app.use('/api/resources', learningResourceRoutes);
 const cvHealthRoutes = require('./routes/cv-health.routes');
 app.use('/api/cv-health', cvHealthRoutes);
 
