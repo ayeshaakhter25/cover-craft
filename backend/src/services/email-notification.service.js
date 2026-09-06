@@ -24,7 +24,7 @@ class EmailNotificationService {
 
     const transporter = this.transporter();
     if (!transporter) {
-      await this.recordOutcome(previous, { userId: user._id, jobId: job._id, status: 'FAILED', matchScore: match.matchScore, error: 'SMTP is not configured' });
+      await this.recordOutcome(previous, { userId: user._id, jobId: job._id, channel: 'EMAIL', status: 'FAILED', matchScore: match.matchScore, error: 'SMTP is not configured' });
       console.warn('Email alert skipped: SMTP is not configured');
       return { skipped: true, reason: 'SMTP is not configured' };
     }
@@ -38,10 +38,10 @@ class EmailNotificationService {
         subject: `🎯 New ${match.matchScore}% Match Job Found!`,
         text: `${job.title}\n${job.company}\n${job.location}\n\nMatch Score: ${match.matchScore}%\n\nStrong Skills: ${strong}\nMissing: ${missing}\n\nView Job: ${job.jobUrl || 'Link unavailable'}`
       });
-      await this.recordOutcome(previous, { userId: user._id, jobId: job._id, status: 'SENT', matchScore: match.matchScore, error: undefined });
+      await this.recordOutcome(previous, { userId: user._id, jobId: job._id, channel: 'EMAIL', status: 'SENT', matchScore: match.matchScore, error: undefined });
       return { sent: true };
     } catch (error) {
-      await this.recordOutcome(previous, { userId: user._id, jobId: job._id, status: 'FAILED', matchScore: match.matchScore, error: error.message });
+      await this.recordOutcome(previous, { userId: user._id, jobId: job._id, channel: 'EMAIL', status: 'FAILED', matchScore: match.matchScore, error: error.message });
       console.error(`Email notification failed for ${user.email}:`, error.message);
       return { sent: false, error: error.message };
     }

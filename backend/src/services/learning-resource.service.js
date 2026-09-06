@@ -14,14 +14,20 @@ const CURATED = {
 class LearningResourceService {
   static baseResource(skill, title, url, source, type, description, relevanceScore, difficulty = 'Beginner') { return { skill, title, url, source, type, description, relevanceScore, difficulty }; }
   static async youtube(skill) {
-    if (!process.env.YOUTUBE_API_KEY) return [this.baseResource(skill, `${skill} beginner tutorials on YouTube`, `https://www.youtube.com/results?search_query=${encodeURIComponent(`${skill} beginner tutorial`)}`, 'YouTube', 'Tutorial', `Search current beginner ${skill} tutorials on YouTube. Add YOUTUBE_API_KEY for ranked video results.`, 82, 'Beginner')];
-    const { data } = await axios.get('https://www.googleapis.com/youtube/v3/search', { params: { key: process.env.YOUTUBE_API_KEY, part: 'snippet', q: `${skill} beginner tutorial`, type: 'video', maxResults: 4, safeSearch: 'strict' } });
-    return (data.items || []).map((item, index) => this.baseResource(skill, item.snippet.title, `https://www.youtube.com/watch?v=${item.id.videoId}`, 'YouTube', 'Tutorial', item.snippet.description, 95 - index * 3, 'Beginner'));
+    const fallback = () => [this.baseResource(skill, `${skill} beginner tutorials on YouTube`, `https://www.youtube.com/results?search_query=${encodeURIComponent(`${skill} beginner tutorial`)}`, 'YouTube', 'Tutorial', `Search current beginner ${skill} tutorials on YouTube. Add YOUTUBE_API_KEY for ranked video results.`, 82, 'Beginner')];
+    if (!process.env.YOUTUBE_API_KEY) return fallback();
+    try {
+      const { data } = await axios.get('https://www.googleapis.com/youtube/v3/search', { params: { key: process.env.YOUTUBE_API_KEY, part: 'snippet', q: `${skill} beginner tutorial`, type: 'video', maxResults: 4, safeSearch: 'strict' }, timeout: 10000 });
+      return (data.items || []).map((item, index) => this.baseResource(skill, item.snippet.title, `https://www.youtube.com/watch?v=${item.id.videoId}`, 'YouTube', 'Tutorial', item.snippet.description, 95 - index * 3, 'Beginner'));
+    } catch (error) {
+      console.warn('YouTube resource search failed:', error.message);
+      return fallback();
+    }
   }
   static async github(skill) {
     try {
       const headers = process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {};
-      const { data } = await axios.get('https://api.github.com/search/repositories', { headers, params: { q: `${skill} tutorial stars:>5`, sort: 'stars', order: 'desc', per_page: 4 } });
+      const { data } = await axios.get('https://api.github.com/search/repositories', { headers, params: { q: `${skill} tutorial stars:>5`, sort: 'stars', order: 'desc', per_page: 4 }, timeout: 10000 });
       return (data.items || []).map((repo, index) => this.baseResource(skill, repo.full_name, repo.html_url, 'GitHub', 'Project', repo.description || `Open-source ${skill} project.`, 93 - index * 3, 'Medium'));
     } catch (error) {
       console.warn('GitHub resource search failed:', error.message);

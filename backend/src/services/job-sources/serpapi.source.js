@@ -7,7 +7,7 @@ class SerpApiJobSource {
     if (!apiKey) return [];
     const params = { engine: 'google_jobs', q: `${skills.slice(0, 5).join(' ') || 'software developer'} jobs`, api_key: apiKey, google_domain: 'google.com', hl: 'en' };
     if (location) params.location = location;
-    const { data } = await axios.get('https://serpapi.com/search.json', { params });
+    const { data } = await axios.get('https://serpapi.com/search.json', { params, timeout: 10000 });
     return (data.jobs_results || []).map(job => this.normalize(job));
   }
   normalize(job) {

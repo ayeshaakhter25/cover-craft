@@ -84,7 +84,7 @@ export default function Analysis({ apiBase, uploadedFilename, setUploadedFilenam
     setLoading(true);
     try {
       let resume = uploadedFilename;
-      if (!resume && file) resume = await uploadCV();
+      if (file) resume = await uploadCV();
       if (!resume) { setLoading(false); return; }
 
       /* fetch jobs for previously uploaded CV if not already loaded */

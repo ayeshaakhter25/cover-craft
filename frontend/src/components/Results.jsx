@@ -124,10 +124,12 @@ export default function Results({ apiBase, matchResult, skills, extractedText, m
               <h3 className="rc-title">Match Score Gauge</h3>
               <div className="gauge-wrap">
                 <Gauge value={score} />
-                <p className="gauge-sub">Software Engineer</p>
+                <p className="gauge-sub">{matching.length + missing.length} skills analyzed</p>
               </div>
               <div className="gauge-footer">
-                Recommended: Software Engineer @ this role → cover-gen
+                {score >= 70
+                  ? 'Strong match — generate a tailored cover letter for this role'
+                  : 'Close the skill gaps below to improve your match'}
               </div>
             </div>
 

@@ -156,6 +156,7 @@ export default function App() {
                 coversGenerated: 0
               }}
               recentMatches={recentMatches}
+              onMatchDeleted={(matchId) => setRecentMatches(prev => prev.filter(m => m.id !== matchId))}
             />
       )} />
 
